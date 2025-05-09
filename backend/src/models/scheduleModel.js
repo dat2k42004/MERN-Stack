@@ -1,0 +1,31 @@
+const mongoose = require("mongoose");
+
+const scheduleSchema = mongoose.Schema({
+     date: {
+          type: Date,
+          required: true,
+     },
+     startTime: {
+          type: String,
+          required: true,
+     },
+     price: {
+          type: Number,
+          required:true,
+     },
+     cinema_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "cinemas",
+     },
+     room_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "rooms",
+     },
+     movie_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "movies",
+     }
+}, {timestamps: true});
+
+
+module.exports = mongoose.model("schedules", scheduleSchema);

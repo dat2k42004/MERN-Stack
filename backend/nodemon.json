@@ -1,0 +1,8 @@
+{
+     "verbonse": true,
+     "ignore" : ["../frontend"],
+     "execMap" : {
+          "rb": "ruby",
+          "pde": "processing --sketch={{file}} --run"
+     }
+}
