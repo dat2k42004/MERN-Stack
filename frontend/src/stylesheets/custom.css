@@ -1,0 +1,89 @@
+:root {
+    --colour--primary: #002E2A;
+    --colour--secondary: #e6b412;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #b1b1b1;
+}
+
+.w-400 {
+    width: 400px;
+}
+
+.content {
+    min-height: 80vh;
+    border: 1px solid #b1b1b1;
+
+}
+
+.underline {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.search-input {
+    height: 50px;
+    border-radius: 5px;
+}
+
+i {
+    font-size: 20px;
+}
+
+table {
+    border: 1px solid #b1b1b1;
+}
+
+thead th {
+    border-bottom: 1px solid #b1b1b1 !important;
+    text-transform: uppercase;
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.txt-alg {
+    text-align: center;
+}
+
+/* loader */
+
+.loader-parent {
+    position: fixed;
+    background-color: black;
+    inset: 0;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+}
+
+.loader {   
+    height: 30px;
+    width: 30px;
+    border: 3px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: loader-anim 1s linear infinite;
+}
+
+.hover:hover {
+    background-color: #007700;
+    color: white;
+}
+
+/*loader animation*/
+
+@keyframes loader-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

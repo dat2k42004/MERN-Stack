@@ -1,0 +1,98 @@
+const router = require("express").Router();
+const Room = require("../models/roomModel");
+const authMiddleware = require("../middlewares/authMiddleware");
+const Seat = require("../models/seatModel");
+
+// add a new Room
+
+router.post("/add-room", authMiddleware, async(req, res) => {
+     try {
+          const newRoom = new Room(req.body);
+          if (await Room.findOne({name: newRoom.name, cinema_id: newRoom.cinema_id})) {
+               res.send({
+                    success: false,
+                    message: "This room has already existed!",
+               });
+          }
+          else {
+               await newRoom.save();
+               for(let i = 1; i <= newRoom.quantity; ++i) {
+                    const newSeat = new Seat({seatNum: i, type: "Single", room_id: newRoom._id});
+                    await newSeat.save();
+               }
+               res.send({
+                    success: true,
+                    message: "Room added successfully!",
+               });
+          }
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          });
+     }
+});
+
+
+router.get("/get-all-rooms", async (req, res) => {
+     try {
+          const Rooms = await Room.find().sort({createAt: -1});
+          res.send({
+               success: true,
+               message: "Rooms fetched successfully!",
+               data: Rooms,
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+});
+
+
+router.post("/update-room", authMiddleware, async (req, res) => {
+     try {
+          const res1 = await Room.findOne({_id: req.body._id});
+          await Room.findByIdAndUpdate(req.body._id, req.body);
+          const res2 = await Room.findOne({ _id: req.body._id });
+          if (res1.quantity > res2.quantity) {
+               for (let i = res2.quantity + 1; i <= res1.quantity; ++ i) {
+                    await Seat.findOneAndDelete({seatNum: i, room_id: req.body._id});
+               }
+          }else if (res2.quantity > res1.quantity) {
+               for(let i = res1.quantity + 1; i <= res2.quantity; ++ i) {
+                    const newSeat = new Seat({ seatNum: i, type: "Single", room_id: req.body._id });
+                    await newSeat.save();
+               }
+          }
+          res.send({
+               success: true,
+               message: "Room has updated successfully!",
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+});
+
+router.post("/delete-room", authMiddleware, async (req, res) => {
+     try {
+          await Seat.deleteMany({room_id: req.body._id});
+          await Room.findByIdAndDelete(req.body._id);
+          res.send({
+               success: true,
+               message: "Room has deleted successfully!",
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+})
+
+
+module.exports = router;
