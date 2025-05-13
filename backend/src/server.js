@@ -10,6 +10,10 @@ const movieRoute = require("./routes/moviesRoute");
 const cinemaRoute = require("./routes/cinemasRoute");
 const roomRoute = require("./routes/roomsRoute");
 const scheduleRoute = require("./routes/schedulesRoute");
+const promotionRoute = require("./routes/promotionsRoute");
+const serviceRoute = require("./routes/servicesRoute");
+const ticketRoute = require("./routes/ticketRoute");
+const billRoute = require("./routes/billsRoute");
 app.use(express.json());
 app.use(cors());
 
@@ -22,6 +26,10 @@ app.use("/api/movies", movieRoute);
 app.use("/api/cinemas", cinemaRoute);
 app.use("/api/rooms", roomRoute);
 app.use("/api/schedules", scheduleRoute);
+app.use("/api/promotions", promotionRoute);
+app.use("/api/services", serviceRoute);
+app.use("/api/tickets", ticketRoute);
+app.use("/api/bills", billRoute);
 app.listen(POST, () => {
     console.log(`Server is running in http://localhost:${POST}`);
 });

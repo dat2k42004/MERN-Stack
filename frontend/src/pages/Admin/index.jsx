@@ -5,7 +5,9 @@ import MoviesList from "./MoviesList";
 import CinemasList from './CinemasList';
 import UsersList from "./UsersList";
 import SchedulesList from "./SchedulesList";
-function Admin() {
+import PromotionList from './PromotionList';
+import ServiceList from './ServiceList';
+function Admin({user}) {
   return (
     <div >
       <PageTitle title="ADMIN"></PageTitle>
@@ -23,8 +25,11 @@ function Admin() {
         <Tabs.TabPane tab="Schedules" key="4">
           <SchedulesList />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Statistics" key="5">
-          Statistics
+        <Tabs.TabPane tab="Promotions" key="5">
+          <PromotionList />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Services" key="6">
+          <ServiceList />
         </Tabs.TabPane>
       </Tabs>
     </div>

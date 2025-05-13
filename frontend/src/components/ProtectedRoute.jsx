@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { message } from "antd";
-import { useState, useEffect } from "react";
-import { GetCurrentUser } from '../apicalls/users'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { GetCurrentUser } from '../apicalls/users';
 import { SetUser } from '../redux/usersSlice';
-import { HideLoading, ShowLoading } from '../redux/loadersSlide';
+import { ShowLoading, HideLoading } from '../redux/loadersSlide';
+
 function ProtectedRoute({ children }) {
      const { user } = useSelector((state) => state.users);
-     const Navigate = useNavigate();
-     // const [user, setUser] = useState(null);
+     const navigate = useNavigate();
+     const location = useLocation();
      const dispatch = useDispatch();
 
      const getCurrentUser = async () => {
@@ -22,11 +22,13 @@ function ProtectedRoute({ children }) {
                } else {
                     dispatch(SetUser(null));
                     message.error(response.message);
+                    navigate("/login");
                }
           } catch (error) {
                dispatch(HideLoading());
                dispatch(SetUser(null));
                message.error(error.message);
+               navigate("/login");
           }
      }
 
@@ -34,55 +36,52 @@ function ProtectedRoute({ children }) {
           if (localStorage.getItem("token")) {
                getCurrentUser();
           } else {
-               Navigate("/login");
+               navigate("/login");
           }
      }, []);
+
+     // ✅ Quy tắc chặn quyền
+     if (user) {
+          const path = location.pathname;
+          if (user.isAdmin && path.startsWith("/user")) {
+               // message.error("Admin không được truy cập trang người dùng!");
+               navigate("/notfound");
+               return null;
+          }
+          if (!user.isAdmin && path.startsWith("/admin")) {
+               message.error("You do not have permission to access this page!");
+               navigate("/notfound");
+               return null;
+          }
+     }
+
      return user && (
           <div className="layout p-1">
                <div className="header bg-primary flex justify-between p-2">
                     <div>
                          <h1 className="text-2xl text-white cursor-pointer" style={{ fontSize: "30px" }}
-                         onClick={() => {
-                              Navigate("/");
-                         }}>
+                              onClick={() => navigate("/")}>
                               MOVIEBOOKING
                          </h1>
                     </div>
+
                     <div className="bg-white p-1 flex gap-1">
                          <i className="ri-user-line text-primary cursor-pointer" style={{ fontSize: "20px" }} onClick={() => {
-                              if (user.isAdmin) {
-                                   Navigate("/admin");
-                              }
-                              else {
-                                   Navigate("/profile");
-                              }
+                              user.isAdmin ? navigate("/admin") : navigate("/user");
                          }}></i>
-                         <h1 className="text-sm underline" style={{ fontSize: "20px" }}
-                         // onClick={() => {
-                         //      if (user.isAdmin) {
-                         //           Navigate("/admin");
-                         //      }
-                         //      else {
-                         //           Navigate("/profile");
-                         //      }
-                         // }}
-                         >
-                              {user.username}
-                         </h1>
+                         <h1 className="text-sm underline" style={{ fontSize: "20px" }}>{user.username}</h1>
                          <i className="ri-logout-circle-r-line ml-2 cursor-pointer" style={{ fontSize: "20px" }}
                               onClick={() => {
                                    localStorage.removeItem("token");
-                                   Navigate("/login");
-                              }}
-                         >
-                         </i>
+                                   navigate("/login");
+                              }}></i>
                     </div>
                </div>
                <div className="content mt-1 p-1">
-                    {children}
+                    {React.cloneElement(children, { user })}
                </div>
-          </div >
+          </div>
      )
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;

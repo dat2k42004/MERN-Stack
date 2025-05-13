@@ -65,9 +65,14 @@ router.post("/update-cinema", authMiddleware, async (req, res) => {
 
 router.post("/delete-cinema", authMiddleware, async (req, res) => {
      try {
-          const room1 = await Room.findOne({cinema_id: req.body._id});
-          await Seat.deleteMany({room_id: room1._id});
-          await Room.deleteMany({cinema_id: req.body._id});
+          const room = await Room.findOne({cinema_id: req.body._id});
+          if (room) {
+               res.send({
+                    success: false,
+                    message: "Cinema also has room. Can't delete!",
+               })
+               return 0;
+          }
           await Cinema.findByIdAndDelete(req.body._id);
           res.send({
                success: true,
