@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Movie = require("../models/movieModel");
+const Schedule = require("../models/scheduleModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 // add a new movie
@@ -63,6 +64,14 @@ router.post("/update-movie", authMiddleware, async (req, res) => {
 
 router.post("/delete-movie", authMiddleware, async (req, res) => {
      try {
+          const schedule = await Schedule.findOne({movie_id: req.body._id});
+          if (schedule) {
+               res.send({
+                    success: false,
+                    message: "Movie also has schedule. Can't delete!",
+               })
+               return 0;
+          }
           await Movie.findByIdAndDelete(req.body._id);
           res.send({
                success: true,

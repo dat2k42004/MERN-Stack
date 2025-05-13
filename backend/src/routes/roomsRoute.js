@@ -2,7 +2,9 @@ const router = require("express").Router();
 const Room = require("../models/roomModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const Seat = require("../models/seatModel");
-
+const Schedule = require("../models/scheduleModel");
+const Ticket = require("../models/ticketModel");
+const { sanitizeFilter } = require("mongoose");
 // add a new Room
 
 router.post("/add-room", authMiddleware, async(req, res) => {
@@ -58,6 +60,8 @@ router.post("/update-room", authMiddleware, async (req, res) => {
           const res2 = await Room.findOne({ _id: req.body._id });
           if (res1.quantity > res2.quantity) {
                for (let i = res2.quantity + 1; i <= res1.quantity; ++ i) {
+                    const seat = await Seat.findOne({seatNum: i, room_id: req.body._id});
+                    await Ticket.deleteMany({seat_id: seat._id});
                     await Seat.findOneAndDelete({seatNum: i, room_id: req.body._id});
                }
           }else if (res2.quantity > res1.quantity) {
@@ -80,6 +84,14 @@ router.post("/update-room", authMiddleware, async (req, res) => {
 
 router.post("/delete-room", authMiddleware, async (req, res) => {
      try {
+          const schedule = Schedule.findOne({room_id: req.body._id});
+          if (schedule) {
+               res.send({
+                    success: false,
+                    message: "Room also has schedule. Can't delete!",
+               })
+               return 0;
+          }
           await Seat.deleteMany({room_id: req.body._id});
           await Room.findByIdAndDelete(req.body._id);
           res.send({

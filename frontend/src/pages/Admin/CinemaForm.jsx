@@ -70,7 +70,17 @@ function CinemaForm({
                          </Col>
                          <Col span={24}>
                               <Form.Item label="Cinema Founder" name="founder">
-                                   <input type="text" />
+                                   <select name="" id="">
+                                        <option value="">Select Founder</option>
+                                        <option value="CGV">CGV</option>
+                                        <option value="Beta">Beta</option>
+                                        <option value="BHD">BHD</option>
+                                        <option value="Lotte">Lotte</option>
+                                        <option value="Galaxy">Galaxy</option>
+                                        <option value="Cinestar">Cinestar</option>
+                                        <option value="Mega GS">Mega GS</option>
+                                        <option value="Dcine">Dcine</option>
+                                   </select>
                               </Form.Item>
                          </Col>
                          <Col span={12}>
