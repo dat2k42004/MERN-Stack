@@ -8,6 +8,9 @@ const  Schedule = require("../models/scheduleModel");
 const Movie = require("../models/movieModel");
 const Cinema = require("../models/cinemaModel");
 const Room = require("../models/roomModel");
+const User = require("../models/userModel");
+const authMiddleware = require("../middlewares/authMiddleware");
+
 
 router.post("/add-bill", async (req, res) => {
      try {
@@ -54,6 +57,45 @@ router.post("/add-bill", async (req, res) => {
 });
 
 
+router.post("/delete-bill", async (req, res) => {
+     console.log(req.body);
+     try {
+          await Bill_Service.deleteMany({bill_id: req.body.bill._id});
+          await Ticket.updateMany({bill_id: req.body.bill._id}, {$set: {status: false, bill_id: null}});
+          if (req.promotion) {
+               await Promotion.updateOne({_id: req.body.promotion._id}, {$inc: {number: 1}});
+          }
+          await Bill.deleteOne({_id: req.body.bill._id});
+          res.send({
+               success: true,
+               message: "Cancel bill successfully",
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+});
+
+
+router.post("/update-bill", async (req, res) => {
+     console.log("bill", req.body._id);
+     try {
+          await Bill.updateOne({_id: req.body._id}, {$set: {status: true}});
+          res.send({
+               success: true,
+               message: "Paymet successfully",
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+})
+
+
 router.post("/get-bill", async (req, res) => {
      try {
           console.log(req.body);
@@ -96,7 +138,55 @@ router.post("/get-bill", async (req, res) => {
                message: error.message,
           })
      }
+});
+
+
+router.get("/get-all-bill", authMiddleware, async (req, res) => {
+     try {
+          const bills = await Bill.find();
+          const response = await Promise.all(bills.map(async (b) => {
+               const bill_service = await Bill_Service.find({bill_id: b._id});
+               const services = await Promise.all(bill_service.map(async (e) => ({
+                    service: await Service.findOne({_id: e.service_id}),
+                    quantity: e.quantity,
+               })));
+               const promotion = await Promotion.findOne({_id: b.promotion_id});
+               const ticket = await Ticket.find({bill_id: b._id});
+               const schedule = await Schedule.findOne({_id: ticket[0].schedule_id});
+               const movie = await Movie.findOne({_id: schedule.movie_id});
+               const cinema = await Cinema.findOne({_id: schedule.cinema_id});
+               const room = await Room.findOne({_id: schedule.room_id});
+               const user = await User.findOne({_id: b.user_id});
+               return {
+                    bill: b,
+                    user: user,
+                    services: services,
+                    promotion: promotion,
+                    ticket: ticket,
+                    schedule: schedule,
+                    movie: movie,
+                    cinema: cinema,
+                    room: room
+               }
+          }));
+
+          console.log(response);
+
+          res.send({
+               success: true,
+               message: "Successfully!",
+               data: response,
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message
+          })
+     }
 })
+
+
+
 
 
 module.exports = router;
