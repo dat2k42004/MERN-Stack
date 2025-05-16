@@ -66,7 +66,7 @@ function UserForm({
                          </Col>
                          <Col span={24}>
                               <Form.Item label="Password" name="password">
-                                   <input type="text" />
+                                   <input type="text" disabled={true}/>
                               </Form.Item>
                          </Col>
                     </Row>

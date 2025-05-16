@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import { GetBill } from '../../apicalls/bill';
+import { GetBill, DeleteBill, UpdateBill } from '../../apicalls/bill';
 import { HideLoading, ShowLoading } from '../../redux/loadersSlide';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -30,6 +30,36 @@ function History({ user }) {
   useEffect(() => {
     getData();
   }, []);
+
+  const handleCancel = async (payload) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await DeleteBill(payload);
+      if (response.success) {
+        getData();
+        message.success(response.message);
+      }
+      dispatch(HideLoading());
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  };
+
+  const handlePayment = async (payload) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await UpdateBill(payload);
+      if(response.success) {
+        getData();
+        message.success(response.message);
+      }
+      dispatch(HideLoading());
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  }
 
 
   return (
@@ -107,14 +137,15 @@ function History({ user }) {
                       transition: "0.3s",
                     }}
                     onClick={() => {
-
+                      console.log(d.bill);
+                      handlePayment(d.bill);
                     }}
                   >Payment</button>
                   <button
                     // disabled={selectedSeats.length === 0}
                     style={{
                       padding: "6px 12px",
-                      backgroundColor: "#28a745",
+                      backgroundColor: "red",
                       color: "white",
                       border: "none",
                       borderRadius: "6px",
@@ -124,10 +155,17 @@ function History({ user }) {
                       transition: "0.3s",
                     }}
                     onClick={() => {
-
+                      const payload = {
+                        bill: d.bill,
+                        ticket: d.ticket,
+                        service: d.service,
+                        promotion: d.promotion
+                      }
+                      console.log(payload);
+                      handleCancel(payload);
                     }}
                   >Cancel</button>
-                </>) : (<strong>Paid</strong>)}
+                </>) : (<strong><h2><i className="ri-check-double-line" style={{color: "green"}}></i></h2></strong>)}
               </div>
             </Col>
           </Row>

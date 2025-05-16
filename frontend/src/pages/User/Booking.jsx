@@ -195,10 +195,10 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                                                  <br />
                                                             <button
                                                                  className="hover"
-                                                                 // disabled={selectedSeats.length === 0}
+                                                                 disabled={!selectedMovie}
                                                                  style={{
                                                                       padding: "6px 12px",
-                                                                      backgroundColor: "#28a745",
+                                                                      backgroundColor: "red",
                                                                       color: "white",
                                                                       border: "none",
                                                                       borderRadius: "6px",
@@ -283,10 +283,10 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                                             <br />
                                                             <button
                                                                  className="hover"
-                                                                 // disabled={selectedSeats.length === 0}
+                                                                 disabled={!selectedCinema}
                                                                  style={{
                                                                       padding: "6px 12px",
-                                                                      backgroundColor: "#28a745",
+                                                                      backgroundColor: "red",
                                                                       color: "white",
                                                                       border: "none",
                                                                       borderRadius: "6px",
