@@ -140,21 +140,22 @@ function Statistic() {
                                         onChange={(e) => setDate({ ...date, end: e.target.value })}
                                    />
 
-                                   <button
-                                        // disabled={selectedSeats.length === 0}
+<button
+                                        type="submit"
                                         style={{
-                                             padding: "6px 12px",
-                                             backgroundColor: "#28a745",
-                                             color: "white",
-                                             border: "none",
-                                             borderRadius: "6px",
-                                             cursor: "pointer",
-                                             fontWeight: "bold",
-                                             fontSize: "16px",
-                                             transition: "0.3s",
-                                             height: "40px",
+                                             height: '40px',
+                                             padding: '0 16px',
+                                             backgroundColor: 'white',
+                                             color: 'black',
+                                             border: '1px solid black',
+                                             borderRadius: '4px',
+                                             cursor: 'pointer',
+                                             fontSize: '14px',
+                                             boxSizing: 'border-box'
                                         }}
-                                   >Search</button>
+                                   >
+                                        Search
+                                   </button>
                                    <br />
                               </form>
 

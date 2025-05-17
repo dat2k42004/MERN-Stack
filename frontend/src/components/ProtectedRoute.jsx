@@ -65,16 +65,40 @@ function ProtectedRoute({ children }) {
                          </h1>
                     </div>
 
-                    <div className="bg-white p-1 flex gap-1">
-                         <i className="ri-user-line text-primary cursor-pointer" style={{ fontSize: "20px" }} onClick={() => {
-                              user.isAdmin ? navigate("/admin") : navigate("/user");
+                    <div className="flex flex-row gap-3">
+                         <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
+                              onClick={() => navigate("/")}>
+                              🏠Home   
+                         </h2>
+
+                         <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
+                              onClick={() => user.isAdmin ? navigate("/admin") : navigate("/user")}>
+                              🧩Features
+                         </h2>
+                    </div>
+
+                    <div className="p-1 flex flex-row gap-1">
+                         {/* <i className="ri-user-line text-primary cursor-pointer" style={{ fontSize: "20px" }} onClick={() => {
+                              navigate("/profile");
                          }}></i>
                          <h1 className="text-sm underline" style={{ fontSize: "20px" }}>{user.username}</h1>
                          <i className="ri-logout-circle-r-line ml-2 cursor-pointer" style={{ fontSize: "20px" }}
                               onClick={() => {
                                    localStorage.removeItem("token");
                                    navigate("/login");
-                              }}></i>
+                              }}></i> */}
+
+                         <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
+                              onClick={() => navigate("/profile")}>
+                              🤖{user.username}
+                         </h2>
+                         <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
+                              onClick={() => {
+                                   localStorage.removeItem("token");
+                                   navigate("/login");
+                              }}>
+                              ➡️
+                         </h2>
                     </div>
                </div>
                <div className="content mt-1 p-1">
