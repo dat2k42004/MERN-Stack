@@ -1,0 +1,89 @@
+const Cinema = require("../models/cinemaModel");
+const Room = require("../models/roomModel");
+const Seat = require("../models/seatModel");
+
+
+const AddCinema = async(req, res) => {
+     try {
+          const newCinema = new Cinema(req.body);
+          if (await Cinema.findOne({name: newCinema.name})) {
+               res.send({
+                    success: false,
+                    message: "This cinema has already existed!",
+               });
+          }
+          else {
+               await newCinema.save();
+               res.send({
+                    success: true,
+                    message: "Cinema added successfully!",
+               });
+          }
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          });
+     }
+}
+
+const GetAllCinema = async (req, res) => {
+     try {
+          const cinemas = await Cinema.find().sort({createAt: -1});
+          res.send({
+               success: true,
+               message: "Cinemas fetched successfully!",
+               data: cinemas,
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+}
+
+const UpdateCinema = async (req, res) => {
+     try {
+          await Cinema.findByIdAndUpdate(req.body._id, req.body);
+          res.send({
+               success: true,
+               message: "Cinema has updated successfully!",
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+};
+
+const DeleteCinema  = async (req, res) => {
+     try {
+          const room = await Room.findOne({cinema_id: req.body._id});
+          if (room) {
+               res.send({
+                    success: false,
+                    message: "Cinema also has room. Can't delete!",
+               })
+               return 0;
+          }
+          await Cinema.findByIdAndDelete(req.body._id);
+          res.send({
+               success: true,
+               message: "Cinema has deleted successfully!",
+          })
+     } catch (error) {
+          res.send({
+               success: false,
+               message: error.message,
+          })
+     }
+}
+
+module.exports = {
+     AddCinema,
+     GetAllCinema,
+     UpdateCinema,
+     DeleteCinema,
+}

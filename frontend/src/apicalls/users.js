@@ -63,3 +63,12 @@ export const GetAllUsers = async () => {
           return error.message;
      }
 }
+
+export const ChangePassword = async (payload) => {
+     try {
+          const response = await axiosInstance.post("/api/users/change-password", payload);
+          return response.data;
+     } catch (error) {
+          return error.message;
+     }
+}

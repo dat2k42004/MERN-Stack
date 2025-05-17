@@ -11,11 +11,12 @@ import "./stylesheets/theme.css";
 import ProtectedRoute from './components/ProtectedRoute';
 import { useSelector } from 'react-redux';
 import Admin from "./pages/Admin";
-import User from './pages/User';
 import NotFound from './components/NotFound';
+import Profile from './components/Profile';
+import User from './pages/User';
 
 function App() {
-  const {loading} = useSelector((state) => state.loaders);
+  const { loading } = useSelector((state) => state.loaders);
   return (
     <div>
       {loading && (
@@ -27,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
           <Route path="/user" element={<ProtectedRoute><User /></ProtectedRoute>}></Route>
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
