@@ -143,7 +143,7 @@ function CinemasList() {
 
 
             <Button
-              title="Add Movie"
+              title="Add Cinema"
               variant="outlined"
               onClick={() => {
                 setShowCinemaFormModal(true);
