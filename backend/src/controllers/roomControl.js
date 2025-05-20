@@ -33,8 +33,9 @@ const AddRoom = async(req, res) => {
 
 const DeleteRoom = async (req, res) => {
      try {
-          const schedule = Schedule.findOne({room_id: req.body._id});
+          const schedule = await Schedule.findOne({room_id: req.body._id});
           if (schedule) {
+               console.log("schedule", schedule);
                res.send({
                     success: false,
                     message: "Room also has schedule. Can't delete!",
