@@ -29,13 +29,17 @@ export const LoginUser = async (payLoad) => {
 
 export const GetCurrentUser = async () => {
      try {
-          const response = await axiosInstance.get("/api/users/get-current-user");
+          const response = await axiosInstance.get("/api/users/get-current-user", {
+               headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+               }
+          });
           return response.data;
+     } catch (error) {
+          return error.response?.data || { success: false, message: error.message };
      }
-     catch (error) {
-          return error;
-     }
-}
+};
+
 
 export const UpdateUser = async (payload) => {
      try {

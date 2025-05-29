@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Form, message } from "antd";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
-import {LoginUser} from "../../apicalls/users";
+import { LoginUser } from "../../apicalls/users";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../redux/loadersSlide";
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
         }
         catch (error) {
             dispatch(HideLoading());
-            message.error(error.message);
+            message.error(error?.message);
         }
     }
 
