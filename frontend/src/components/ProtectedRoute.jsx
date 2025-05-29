@@ -20,6 +20,8 @@ function ProtectedRoute({ children }) {
                if (response.success) {
                     dispatch(SetUser(response.data));
                } else {
+                    // Nếu token không hợp lệ hoặc có lỗi từ server, xóa token và chuyển hướng
+                    localStorage.removeItem("token"); // <-- THÊM DÒNG NÀY
                     dispatch(SetUser(null));
                     message.error(response.message);
                     navigate("/login");
@@ -28,23 +30,38 @@ function ProtectedRoute({ children }) {
                dispatch(HideLoading());
                dispatch(SetUser(null));
                message.error(error.message);
+               localStorage.removeItem("token"); // <-- THÊM DÒNG NÀY (cho trường hợp lỗi mạng hoặc lỗi không xác định)
                navigate("/login");
           }
      }
 
+     // Không cần fetchedUser state nữa, vì việc xóa token và navigate sẽ giải quyết vòng lặp
+     // const [fetchedUser, setFetchedUser] = useState(false);
+
      useEffect(() => {
-          if (localStorage.getItem("token")) {
-               getCurrentUser();
+          const token = localStorage.getItem("token");
+          if (token) {
+               // Chỉ gọi getCurrentUser nếu có token VÀ user chưa được tải vào Redux
+               if (!user) { // Kiểm tra user trong Redux store
+                    getCurrentUser();
+               }
           } else {
+               // Nếu không có token, chuyển hướng ngay lập tức
                navigate("/login");
           }
-     }, []);
+     }, [user, navigate]); // Chỉ user và navigate là dependencies
 
-     // ✅ Quy tắc chặn quyền
+     // Thêm một trạng thái loading cục bộ nếu bạn muốn hiển thị spinner trong khi fetch user
+     // Trong trường hợp này, bạn đang dùng Redux loadersSlide, nên không cần
+     // Tuy nhiên, có thể hiển thị một cái gì đó rỗng nếu user chưa được tải
+     if (!user) {
+          return null; // Hoặc một component loading
+     }
+
+     // ✅ Quy tắc chặn quyền (giữ nguyên)
      if (user) {
           const path = location.pathname;
           if (user.isAdmin && path.startsWith("/user")) {
-               // message.error("Admin không được truy cập trang người dùng!");
                navigate("/notfound");
                return null;
           }
@@ -55,7 +72,7 @@ function ProtectedRoute({ children }) {
           }
      }
 
-     return user && (
+     return user && ( // Chỉ render nếu user đã có
           <div className="layout p-1">
                <div className="header bg-primary flex justify-between p-2">
                     <div>
@@ -68,7 +85,7 @@ function ProtectedRoute({ children }) {
                     <div className="flex flex-row gap-3">
                          <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
                               onClick={() => navigate("/")}>
-                              🏠Home   
+                              🏠Home
                          </h2>
 
                          <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
@@ -78,16 +95,6 @@ function ProtectedRoute({ children }) {
                     </div>
 
                     <div className="p-1 flex flex-row gap-1">
-                         {/* <i className="ri-user-line text-primary cursor-pointer" style={{ fontSize: "20px" }} onClick={() => {
-                              navigate("/profile");
-                         }}></i>
-                         <h1 className="text-sm underline" style={{ fontSize: "20px" }}>{user.username}</h1>
-                         <i className="ri-logout-circle-r-line ml-2 cursor-pointer" style={{ fontSize: "20px" }}
-                              onClick={() => {
-                                   localStorage.removeItem("token");
-                                   navigate("/login");
-                              }}></i> */}
-
                          <h2 className="text-2xl text-white cursor-pointer" style={{ fontSize: "25px" }}
                               onClick={() => navigate("/profile")}>
                               🤖{user.username}
