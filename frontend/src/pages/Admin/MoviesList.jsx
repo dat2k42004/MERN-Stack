@@ -120,7 +120,7 @@ function MoviesList() {
                                         setShowTrailerModal(true);
                                    }}
                               ></Button> */}
-                              <i class="ri-youtube-fill w-16 h-20" style={{ color: "red"}} onClick={() => {
+                              <i class="ri-youtube-fill w-16 h-20" style={{ color: "red" }} onClick={() => {
                                    setSelectedTrailer(videoId);
                                    setShowTrailerModal(true);
                               }}></i>
@@ -159,20 +159,20 @@ function MoviesList() {
      ]
 
      const [searchText, setSearchText] = useState("");
-     const [filteredMovies, setFilteredMovies] = useState([]);
-     const handleSubmit = (e) => {
-          e.preventDefault();
-          const filtered = movies.filter((movie) =>
-               movie.title.toLowerCase().includes(searchText.toLowerCase())
-          );
-          setFilteredMovies(filtered);
-     };
+     // const [filteredMovies, setFilteredMovies] = useState([]);
+     // const handleSubmit = (e) => {
+     //      e.preventDefault();
+     //      const filtered = movies.filter((movie) =>
+     //           movie.title.toLowerCase().includes(searchText.toLowerCase())
+     //      );
+     //      setFilteredMovies(filtered);
+     // };
 
 
      return (
           <div>
                <div className="flex justify-between items-center mb-4">
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                          <input
                               type="text"
                               name="movieKey"
@@ -189,7 +189,7 @@ function MoviesList() {
                                    minWidth: '250px'
                               }}
                          />
-                         <button
+                         {/* <button
                               type="submit"
                               style={{
                                    height: '40px',
@@ -204,7 +204,7 @@ function MoviesList() {
                               }}
                          >
                               Search
-                         </button>
+                         </button> */}
                     </form>
 
 
@@ -218,10 +218,10 @@ function MoviesList() {
                     />
                </div>
 
-
+               <br />
                <Table
                     columns={columns}
-                    dataSource={searchText.length > 0 ? filteredMovies : movies}
+                    dataSource={searchText.length === 0 ? movies : movies.filter((movie) => movie.title.toLowerCase().includes(searchText.toLowerCase()))}
                     rowKey="_id"
                />
 

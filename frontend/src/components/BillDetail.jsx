@@ -62,7 +62,7 @@ function BillDetail({ selectedBill, setSelectedBill, setDetailForm, detailForm }
                     <div>
                          <h2 style={{ fontWeight: "bold", fontSize: "18px" }}>Service</h2>
                          <ul>
-                              {!selectedBill.services ? "No" : selectedBill.services.map((e) => (
+                              {selectedBill.services.length === 0 ? "No" : selectedBill.services.map((e) => (
                                    <li>{e.service.type} ({e.service.price} VND) : {e.quantity}</li>
                               ))}
                          </ul>

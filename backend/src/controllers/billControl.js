@@ -74,6 +74,8 @@ const DeleteBill = async (req, res) => {
      }
 }
 
+
+
 const UpdateBill = async (req, res) => {
      console.log("bill", req.body._id);
      try {
@@ -145,10 +147,10 @@ const GetAllBill = async (req, res) => {
                })));
                const promotion = await Promotion.findOne({_id: b.promotion_id});
                const ticket = await Ticket.find({bill_id: b._id});
-               const schedule = await Schedule.findOne({_id: ticket[0].schedule_id});
-               const movie = await Movie.findOne({_id: schedule.movie_id});
-               const cinema = await Cinema.findOne({_id: schedule.cinema_id});
-               const room = await Room.findOne({_id: schedule.room_id});
+               const schedule = await Schedule.findOne({_id: ticket[0]?.schedule_id});
+               const movie = await Movie.findOne({_id: schedule?.movie_id});
+               const cinema = await Cinema.findOne({_id: schedule?.cinema_id});
+               const room = await Room.findOne({_id: schedule?.room_id});
                const user = await User.findOne({_id: b.user_id});
                return {
                     bill: b,
