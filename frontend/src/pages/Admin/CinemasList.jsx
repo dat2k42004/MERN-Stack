@@ -92,21 +92,21 @@ function CinemasList() {
     }
   ]
   const [searchText, setSearchText] = useState("");
-  const [filteredCinemas, setFilteredCinemas] = useState([]);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const filtered = cinemas.filter((cinema) =>
-      cinema.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-    setFilteredCinemas(filtered);
-  };
+  // const [filteredCinemas, setFilteredCinemas] = useState([]);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const filtered = cinemas.filter((cinema) =>
+  //     cinema.name.toLowerCase().includes(searchText.toLowerCase())
+  //   );
+  //   setFilteredCinemas(filtered);
+  // };
   return (
     <div>
       {!showRoomModal &&
         <div>
 
           <div className="flex justify-between items-center mb-4">
-            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
                 type="text"
                 name="movieKey"
@@ -123,7 +123,7 @@ function CinemasList() {
                   minWidth: '250px'
                 }}
               />
-              <button
+              {/* <button
                 type="submit"
                 style={{
                   height: '40px',
@@ -138,7 +138,7 @@ function CinemasList() {
                 }}
               >
                 Search
-              </button>
+              </button> */}
             </form>
 
 
@@ -151,10 +151,10 @@ function CinemasList() {
               }}
             />
           </div>
-
+          <br />
           <Table
             columns={columns}
-            dataSource={searchText.length > 0 ? filteredCinemas : cinemas}
+            dataSource={searchText.length > 0 ? cinemas.filter((cinema) => cinema.name.toLowerCase().includes(searchText.toLowerCase())) : cinemas}
             rowKey="_id"
           />
 

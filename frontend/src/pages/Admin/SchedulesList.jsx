@@ -81,7 +81,7 @@ function SchedulesList() {
           {
                title: "Movie",
                dataIndex: "movie_id",
-               render : (text, record) => {
+               render: (text, record) => {
                     return movies.find(e => e._id === record.movie_id)?.title;
                }
           },
@@ -141,27 +141,27 @@ function SchedulesList() {
                }
           }
      ]
-     const handleSubmit = (e) => {
-          e.preventDefault();
-          const formattedDate = keyDate ? moment(keyDate).format("YYYY-MM-DD") : "";
+     // const handleSubmit = (e) => {
+     //      e.preventDefault();
+     //      const formattedDate = keyDate ? moment(keyDate).format("YYYY-MM-DD") : "";
 
-          const filtered = schedules.filter((e) => {
-               const matchMovie = keyMovie ? e.movie_id === keyMovie : true;
-               const matchCinema = keyCinema ? e.cinema_id === keyCinema : true;
-               const matchRoom = keyRoom ? e.room_id === keyRoom : true;
-               const matchDate = keyDate ? moment(e.date).format("YYYY-MM-DD") === formattedDate : true;
+     //      const filtered = schedules.filter((e) => {
+     //           const matchMovie = keyMovie ? e.movie_id === keyMovie : true;
+     //           const matchCinema = keyCinema ? e.cinema_id === keyCinema : true;
+     //           const matchRoom = keyRoom ? e.room_id === keyRoom : true;
+     //           const matchDate = keyDate ? moment(e.date).format("YYYY-MM-DD") === formattedDate : true;
 
-               return matchMovie && matchCinema && matchRoom && matchDate;
-          });
+     //           return matchMovie && matchCinema && matchRoom && matchDate;
+     //      });
 
-          setSearch({ movie: keyMovie, cinema: keyCinema, room: keyRoom, date: formattedDate });
-          setSchedules(filtered);
-     }
-     
+     //      setSearch({ movie: keyMovie, cinema: keyCinema, room: keyRoom, date: formattedDate });
+     //      setSchedules(filtered);
+     // }
+
      return (
           <div>
                <div className="flex justify-between items-center mb-4">
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                          <select value={keyMovie} onChange={(e) => setKeyMovie(e.target.value)} style={{
                               height: '40px',
                               padding: '0 12px',
@@ -213,7 +213,7 @@ function SchedulesList() {
                               boxSizing: 'border-box',
                               minWidth: '250px'
                          }} />
-                         <button
+                         {/* <button
                               type="submit"
                               style={{
                                    height: '40px',
@@ -228,7 +228,7 @@ function SchedulesList() {
                               }}
                          >
                               Search
-                         </button>
+                         </button> */}
                     </form>
 
 
@@ -241,9 +241,17 @@ function SchedulesList() {
                          }}
                     />
                </div>
+               <br />
                <Table
                     columns={columns}
-                    dataSource={schedules}
+                    dataSource={schedules.filter((e) => {
+                         const matchMovie = keyMovie ? e.movie_id === keyMovie : true;
+                         const matchCinema = keyCinema ? e.cinema_id === keyCinema : true;
+                         const matchRoom = keyRoom ? e.room_id === keyRoom : true;
+                         const matchDate = keyDate ? moment(e.date).format("YYYY-MM-DD") === (keyDate ? moment(keyDate).format("YYYY-MM-DD") : "") : true;
+
+                         return matchMovie && matchCinema && matchRoom && matchDate;
+                    })}
                     rowKey="_id"
                />
 

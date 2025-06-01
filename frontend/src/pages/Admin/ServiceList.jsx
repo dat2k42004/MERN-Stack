@@ -78,20 +78,20 @@ function ServicesList() {
      ]
 
      const [searchText, setSearchText] = useState("");
-     const [filteredServices, setFilteredServices] = useState([]);
-     const handleSubmit = (e) => {
-          e.preventDefault();
-          const filtered = services.filter((service) =>
-               service.title.toLowerCase().includes(searchText.toLowerCase())
-          );
-          setFilteredServices(filtered);
-     };
+     // const [filteredServices, setFilteredServices] = useState([]);
+     // const handleSubmit = (e) => {
+     //      e.preventDefault();
+     //      const filtered = services.filter((service) =>
+     //           service.title.toLowerCase().includes(searchText.toLowerCase())
+     //      );
+     //      setFilteredServices(filtered);
+     // };
 
 
      return (
           <div>
                <div className="flex justify-between items-center mb-4">
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <form  style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                          <input
                               type="text"
                               name="serviceKey"
@@ -108,7 +108,7 @@ function ServicesList() {
                                    minWidth: '250px'
                               }}
                          />
-                         <button
+                         {/* <button
                               type="submit"
                               style={{
                                    height: '40px',
@@ -123,7 +123,8 @@ function ServicesList() {
                               }}
                          >
                               Search
-                         </button>
+                         </button> */}
+                         <br />
                     </form>
 
 
@@ -136,11 +137,13 @@ function ServicesList() {
                          }}
                     />
                </div>
-
+               <br />
 
                <Table
                     columns={columns}
-                    dataSource={searchText.length > 0 ? filteredServices : services}
+                    dataSource={searchText.length > 0 ? services.filter((service) =>
+                         service.type.toLowerCase().includes(searchText.toLowerCase())
+                    ) : services}
                     rowKey="_id"
                />
 

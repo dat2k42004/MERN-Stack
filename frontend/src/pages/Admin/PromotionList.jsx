@@ -92,20 +92,20 @@ function PromotionsList() {
      ]
 
      const [searchText, setSearchText] = useState("");
-     const [filteredPromotions, setFilteredPromotions] = useState([]);
-     const handleSubmit = (e) => {
-          e.preventDefault();
-          const filtered = promotions.filter((promotion) =>
-               promotion.title.toLowerCase().includes(searchText.toLowerCase())
-          );
-          setFilteredPromotions(filtered);
-     };
+     // const [filteredPromotions, setFilteredPromotions] = useState([]);
+     // const handleSubmit = (e) => {
+     //      e.preventDefault();
+     //      const filtered = promotions.filter((promotion) =>
+     //           promotion.title.toLowerCase().includes(searchText.toLowerCase())
+     //      );
+     //      setFilteredPromotions(filtered);
+     // };
 
 
      return (
           <div>
                <div className="flex justify-between items-center mb-4">
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                          <input
                               type="text"
                               name="promotionKey"
@@ -122,7 +122,7 @@ function PromotionsList() {
                                    minWidth: '250px'
                               }}
                          />
-                         <button
+                         {/* <button
                               type="submit"
                               style={{
                                    height: '40px',
@@ -137,7 +137,7 @@ function PromotionsList() {
                               }}
                          >
                               Search
-                         </button>
+                         </button> */}
                     </form>
 
 
@@ -150,11 +150,13 @@ function PromotionsList() {
                          }}
                     />
                </div>
-
+               <br />
 
                <Table
                     columns={columns}
-                    dataSource={searchText.length > 0 ? filteredPromotions : promotions}
+                    dataSource={searchText.length > 0 ? promotions.filter((promotion) =>
+                         promotion.name.toLowerCase().includes(searchText.toLowerCase())
+                    ) : promotions}
                     rowKey="_id"
                />
 
