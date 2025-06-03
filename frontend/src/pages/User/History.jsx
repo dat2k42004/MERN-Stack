@@ -5,9 +5,11 @@ import { HideLoading, ShowLoading } from '../../redux/loadersSlide';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { message, Row, Col } from 'antd';
+import { useLocation } from "react-router-dom";
 
 function History({ user }) {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [data, setData] = useState(null);
 
 
@@ -29,7 +31,7 @@ function History({ user }) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [location.state]);
 
   const handleCancel = async (payload) => {
     try {
@@ -50,7 +52,7 @@ function History({ user }) {
     try {
       dispatch(ShowLoading());
       const response = await UpdateBill(payload);
-      if(response.success) {
+      if (response.success) {
         getData();
         message.success(response.message);
       }
@@ -165,7 +167,7 @@ function History({ user }) {
                       handleCancel(payload);
                     }}
                   >Cancel</button>
-                </>) : (<strong><h2><i className="ri-check-double-line" style={{color: "green"}}></i></h2></strong>)}
+                </>) : (<strong><h2><i className="ri-check-double-line" style={{ color: "green" }}></i></h2></strong>)}
               </div>
             </Col>
           </Row>
