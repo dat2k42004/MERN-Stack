@@ -75,7 +75,7 @@ function ScheduleForm({
               </select>
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item label="Cinema" name="cinema_id">
               <select name="" id="" value={keyCinema} onChange={(e) => setKeyCinema(e.target.value)}>
                 <option value="">Select Cinema</option>
@@ -108,6 +108,14 @@ function ScheduleForm({
           <Col span={12}>
             <Form.Item label="Price" name="price">
               <input type="number" placeholder='1000' min="1000"/>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Schedule Active" name="active">
+              <select name="" id="">
+                <option value="true">Action</option>
+                <option value="false">Stop</option>
+              </select>
             </Form.Item>
           </Col>
         </Row>

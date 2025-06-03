@@ -30,7 +30,7 @@ function Movie({ MoviegoToBooking }) {
                dispatch(ShowLoading());
                const response = await GetAllMovies();
                if (response.success) {
-                    setMovies(response.data);
+                    setMovies(response.data.filter((e) => e.active));
                }
                else {
                     message.error(response.message);
@@ -87,6 +87,7 @@ function Movie({ MoviegoToBooking }) {
                                                   setSelectedMovie(movie);
                                                   setShowMovieInfoModal(true);
                                              }}
+                                             style={{fontSize: "25px"}}
                                         >
                                              {movie.title}
                                         </h1>
@@ -132,7 +133,7 @@ function Movie({ MoviegoToBooking }) {
                                                             setShowTrailerModal(true);
                                                        }
                                                   }}
-                                             >Watch Trailer</button>
+                                             >Trailer</button>
                                              <br />
                                              <button
                                                   className="hover"

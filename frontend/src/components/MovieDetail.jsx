@@ -8,10 +8,11 @@ function MovieDetail({ showMovieInfoModal, setShowMovieInfoModal, selectedMovie 
                open={showMovieInfoModal}
                onCancel={() => setShowMovieInfoModal(false)}
                footer={null}
-               title={selectedMovie?.title}
+          // title={selectedMovie?.title}
           >
                {selectedMovie && (
                     <div className="flex flex-col gap-1">
+                         <h2>{selectedMovie.title}</h2>
                          <img
                               src={selectedMovie.poster}
                               alt="Poster"

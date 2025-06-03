@@ -24,6 +24,11 @@ const scheduleSchema = mongoose.Schema({
      movie_id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "movies",
+     },
+     active: {
+          type: Boolean,
+          required: true,
+          default: true,
      }
 }, {timestamps: true});
 

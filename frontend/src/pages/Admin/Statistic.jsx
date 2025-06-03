@@ -23,7 +23,7 @@ function Statistic() {
                if (response.success) {
                     setData(response.data);
                     console.log(data);
-                    message.success(response.message);
+                    // message.success(response.message);
                }
                else {
                     message.error(response.message);

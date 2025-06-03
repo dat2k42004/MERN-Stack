@@ -74,7 +74,7 @@ function RoomForm({
                                    <input type="text" />
                               </Form.Item>
                          </Col>
-                         <Col span={12}>
+                         <Col span={8}>
                               <Form.Item label="Room Type" name="type">
                                    <select name="" id="">
                                         <option value="">Select Room Type</option>
@@ -86,12 +86,21 @@ function RoomForm({
                                    </select>
                               </Form.Item>
                          </Col>
-                         <Col span={12}>
+                         <Col span={8}>
                               <Form.Item label="Room Quantity" name="quantity">
                                    <input type="number" min="1" placeholder='1' />
                               </Form.Item>
                          </Col>
-                         <Col span={12}>
+
+                         <Col span={8}>
+                              <Form.Item label="Room Active" name="active">
+                                   <select name="" id="">
+                                        <option value="true">Action</option>
+                                        <option value="false">Stop</option>
+                                   </select>
+                              </Form.Item>
+                         </Col>
+                         <Col span={8}>
                               <Form.Item name="cinema_id" initialValue={selectedCinema._id} hidden>
                                    <input type="text" />
                               </Form.Item>

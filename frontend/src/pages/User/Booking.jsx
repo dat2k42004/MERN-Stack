@@ -46,7 +46,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                dispatch(ShowLoading());
                const response = await GetAllSchedules();
                if (response.success) {
-                    setAllSchedules(response.data);
+                    setAllSchedules(response.data.filter((e) => (e.date + " " + e.startTime).localeCompare(moment(new Date()).format("YYYY-MM-DD HH:mm")) >= 0 && e.active));
                } else {
                     message.error(response.message);
                }
@@ -67,19 +67,19 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                ]);
 
                if (cinemasResponse.success) {
-                    setCinemas(cinemasResponse.data);
+                    setCinemas(cinemasResponse.data.filter((e) => e.active));
                } else {
                     message.error(cinemasResponse.message);
                }
 
                if (moviesResponse.success) {
-                    setMovies(moviesResponse.data);
+                    setMovies(moviesResponse.data.filter((e) => e.active));
                } else {
                     message.error(moviesResponse.message);
                }
 
                if (roomsResponse.success) {
-                    setRooms(roomsResponse.data);
+                    setRooms(roomsResponse.data.filter((e) => e.active));
                } else {
                     message.error(roomsResponse.message);
                }
@@ -160,7 +160,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                                             style={{
                                                                  // borderRadius: "4px",
                                                                  // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                                                                 border:"none",
+                                                                 border: "none",
                                                                  width: "80%"
                                                             }}
                                                        >
@@ -192,7 +192,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                                                  }}
                                                                  onClick={() => handleMovieSelect(movie)}
                                                             >Chose</button>
-                                                                 <br />
+                                                            <br />
                                                             <button
                                                                  className="hover"
                                                                  disabled={!selectedMovie}
@@ -225,7 +225,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                         placeholder="Search for cinema"
                                         value={search.cinema}
                                         onChange={(e) => setSearch({ ...search, cinema: e.target.value })}
-                                   />   
+                                   />
                                    {cinemas &&
                                         cinemas
                                              .filter((cinema) =>
@@ -243,7 +243,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                                             marginBottom: "10px",
                                                        }}
                                                   >
-                                                       
+
                                                        <div
                                                             className="p-2 card flex flex-row gap-1"
                                                             style={{
@@ -331,20 +331,20 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                              >
                                                   {room && room.map((e) => (
                                                        <div
-                                                       className="p-2 card flex flex-col gap-1"
-                                                       style={{
-                                                            // borderRadius: "4px",
-                                                            // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                                                            border: "none",
-                                                            width: "80%"
-                                                       }}
-                                                  >
+                                                            className="p-2 card flex flex-col gap-1"
+                                                            style={{
+                                                                 // borderRadius: "4px",
+                                                                 // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+                                                                 border: "none",
+                                                                 width: "80%"
+                                                            }}
+                                                       >
                                                             <div>{e.name} ({e.type})</div>
                                                             <div>Movie: {movies.find(m => m._id === schedule.movie_id)?.title}</div>
                                                             <div>Cinema: {cinemas.find(c => c._id === schedule.cinema_id)?.name}</div>
                                                             <div>Start Time: {moment(schedule.startTime, "HH:mm").format("HH:mm")}</div>
                                                             <div>Date: {moment(schedule.date).format("YYYY-MM-DD")}</div>
-                                                  </div>
+                                                       </div>
                                                   ))}
                                                   {/* <Button
                                                        title="Book"
@@ -388,7 +388,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
 
 
                {showChoseSeat && (
-                    <ChoseSeat 
+                    <ChoseSeat
                          selectedSchedule={selectedSchedule}
                          showChoseSeat={showChoseSeat}
                          setShowChoseSeat={setShowChoseSeat}

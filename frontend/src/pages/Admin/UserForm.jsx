@@ -65,10 +65,20 @@ function UserForm({
                               </Form.Item>
                          </Col>
                          <Col span={24}>
-                              <Form.Item label="Password" name="password">
-                                   <input type="text" disabled={true}/>
+                              <Form.Item label="Password" name="password" hidden>
+                                   <input type="text" disabled={true} />
                               </Form.Item>
                          </Col>
+                         {!selectedUser.isAdmin && (
+                              <Col span={24}>
+                                   <Form.Item label="User Active" name="active">
+                                        <select name="" id="">
+                                             <option value="true">Action</option>
+                                             <option value="false">Stop</option>
+                                        </select>
+                                   </Form.Item>
+                              </Col>
+                         )}
                     </Row>
 
                     <div className="flex justify-end gap-1">
