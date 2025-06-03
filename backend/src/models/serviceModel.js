@@ -12,6 +12,11 @@ const serviceSchema = new mongoose.Schema({
      price: {
           type: Number,
           required: true,
+     },
+     active: {
+          type: Boolean,
+          required: true,
+          default: true,
      }
 });
 

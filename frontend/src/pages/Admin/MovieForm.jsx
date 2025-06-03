@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, Form, Row, Col, message } from "antd";
 import Button from "../../components/Button";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from '../../redux/loadersSlide';
 import { AddMovie, UpdateMovie, DeleteMovie } from '../../apicalls/movies';
 import moment from 'moment';
@@ -27,7 +27,7 @@ function MovieForm({
 
                } else if (formType === "edit") {
                     response = await UpdateMovie({
-                         ...values, 
+                         ...values,
                          _id: selectedMovie._id,
                     })
                } else {
@@ -36,11 +36,11 @@ function MovieForm({
                          _id: selectedMovie._id,
                     })
                }
-               if (response.success){
+               if (response.success) {
                     getData();
                     message.success(response.message);
                     setShowMovieFormModal(false);
-               }else {
+               } else {
                     message.error(response.message);
                }
                dispatch(HideLoading());
@@ -86,7 +86,7 @@ function MovieForm({
                                    <input type="date" />
                               </Form.Item>
                          </Col>
-                         <Col span={16}>
+                         <Col span={8}>
                               <Form.Item label="Movie Genre" name="genre">
                                    <select name="" id="">
                                         <option value="">Select Genre</option>
@@ -108,6 +108,14 @@ function MovieForm({
                                         <option value="Family">Family</option>
                                         <option value="Mystery">Mystery</option>
                                         <option value="Romance">Romance</option>
+                                   </select>
+                              </Form.Item>
+                         </Col>
+                         <Col span={8}>
+                              <Form.Item label="Movie Active" name="active">
+                                   <select name="" id="">
+                                        <option value="true">Action</option>
+                                        <option value="false">Stop</option>
                                    </select>
                               </Form.Item>
                          </Col>

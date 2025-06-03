@@ -89,7 +89,7 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
           quantity: 0,
         }));
         setSelectedService(initialSelectedServices);
-        setServices(response.data); // Bạn vẫn cần set state services để hiển thị tên dịch vụ
+        setServices(response.data.filter((e) => e.active)); // Bạn vẫn cần set state services để hiển thị tên dịch vụ
       } else {
         message.error(response.message);
       }
@@ -108,7 +108,7 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
       dispatch(ShowLoading());
       const response = await GetAllPromotions();
       if (response.success) {
-        setPromotions(response.data.filter((e) => e.date.localeCompare(moment(new Date()).format("YYYY-MM-DD")) >= 0));
+        setPromotions(response.data.filter((e) => e.date.localeCompare(moment(new Date()).format("YYYY-MM-DD")) >= 0 && e.active));
       } else {
         message.error(response.message);
       }

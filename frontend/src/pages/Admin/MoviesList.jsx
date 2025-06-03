@@ -134,6 +134,13 @@ function MoviesList() {
                }
           },
           {
+               title: "Active",
+               dataIndex: "active",
+               render: (text, record) => {
+                    return record.active ? "Action" : "Stop";
+               }
+          },
+          {
                title: "Action",
                dataIndex: "action",
                render: (text, record) => {

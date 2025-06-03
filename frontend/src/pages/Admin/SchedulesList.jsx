@@ -34,17 +34,17 @@ function SchedulesList() {
                const res3 = await GetAllRooms();
 
                if (res1.success) {
-                    setMovies(res1.data);
+                    setMovies(res1.data.filter((e) => e.active));
                } else {
                     message.error(res1.message)
                }
                if (res2.success) {
-                    setCinemas(res2.data);
+                    setCinemas(res2.data.filter((e) => e.active));
                } else {
                     message.error(res2.message)
                }
                if (res3.success) {
-                    setRooms(res3.data);
+                    setRooms(res3.data.filter((e) => e.active));
                } else {
                     message.error(res3.message)
                }
@@ -116,6 +116,13 @@ function SchedulesList() {
           {
                title: "Price",
                dataIndex: "price",
+          },
+          {
+               title: "Active",
+               dataIndex: "active",
+               render: (text, record) => {
+                    return record.active ? "Action" : "Stop";
+               }
           },
           {
                title: "Action",

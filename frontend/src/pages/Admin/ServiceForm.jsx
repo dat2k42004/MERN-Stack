@@ -62,7 +62,7 @@ function ServiceForm({
                                    <input type="text" />
                               </Form.Item>
                          </Col>
-                         <Col span={12}>
+                         <Col span={8}>
                               <Form.Item label="Service Type" name="type">
                                    <select name="" id="">
                                         <option value="">Select Type</option>
@@ -74,12 +74,19 @@ function ServiceForm({
                                    </select>
                               </Form.Item>
                          </Col>
-                         <Col span={12}>
+                         <Col span={8}>
                               <Form.Item label="Service Price" name="price">
                                    <input type="number" placeholder='1000' />
                               </Form.Item>
                          </Col>
-                         
+                         <Col span={8}>
+                              <Form.Item label="Service Active" name="active">
+                                   <select name="" id="">
+                                        <option value="true">Action</option>
+                                        <option value="false">Stop</option>
+                                   </select>
+                              </Form.Item>
+                         </Col>
                     </Row>
 
                     <div className="flex justify-end gap-1">

@@ -3,7 +3,7 @@ import { Modal, Form, Row, Col, message } from "antd";
 import Button from "../../components/Button";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from '../../redux/loadersSlide';
-import { AddCinema, UpdateCinema, DeleteCinema }  from '../../apicalls/cinemas';
+import { AddCinema, UpdateCinema, DeleteCinema } from '../../apicalls/cinemas';
 function CinemaForm({
      showCinemaFormModal,
      setShowCinemaFormModal,
@@ -12,7 +12,7 @@ function CinemaForm({
      getData,
      formType
 }) {
-     
+
      const dispatch = useDispatch();
      const onFinish = async (values) => {
           try {
@@ -68,7 +68,7 @@ function CinemaForm({
                                    <input type="text" />
                               </Form.Item>
                          </Col>
-                         <Col span={24}>
+                         <Col span={12}>
                               <Form.Item label="Cinema Founder" name="founder">
                                    <select name="" id="">
                                         <option value="">Select Founder</option>
@@ -85,12 +85,20 @@ function CinemaForm({
                          </Col>
                          <Col span={12}>
                               <Form.Item label="Cinema Star" name="star">
-                                   <input type="number" min="1" max="5" placeholder='4'/>
+                                   <input type="number" min="1" max="5" placeholder='4' />
                               </Form.Item>
                          </Col>
                          <Col span={12}>
                               <Form.Item label="Cinema Phone" name="phone">
                                    <input type="text" />
+                              </Form.Item>
+                         </Col>
+                         <Col span={12}>
+                              <Form.Item label="Cinema Active" name="active">
+                                   <select name="" id="">
+                                        <option value="true">Action</option>
+                                        <option value="false">Stop</option>
+                                   </select>
                               </Form.Item>
                          </Col>
                     </Row>

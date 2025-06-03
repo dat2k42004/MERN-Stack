@@ -46,8 +46,11 @@ function UsersList() {
                dataIndex: "email",
           },
           {
-               title: "Password",
-               dataIndex: "password",
+               title: "Active",
+               dataIndex: "active",
+               render: (text, record) => {
+                    return record.active ? "Action" : "Stop";
+               }
           },
           {
                title: "Action",

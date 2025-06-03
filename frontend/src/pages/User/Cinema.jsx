@@ -42,7 +42,7 @@ import { Icon } from "../../components/Icon";
 //     image: "https://play-lh.googleusercontent.com/13niUTsOUjEP_9SYPLyjznAA67ckOp0VvqJBQSZvLaEv_024VxWXyU7vEIOuWsMFBBo",
 //   }
 // ]
-function Cinema({CinemaToBooking}) {
+function Cinema({ CinemaToBooking }) {
   const [cinemas, setCinemas] = useState([]);
   const dispatch = useDispatch();
   const [selectedCinema, setSelectedCinema] = useState(null);
@@ -59,7 +59,7 @@ function Cinema({CinemaToBooking}) {
       dispatch(ShowLoading());
       const response = await GetAllCinemas();
       if (response.success) {
-        setCinemas(response.data);
+        setCinemas(response.data.filter((e) => e.active));
       }
       else {
         message.error(response.message);
@@ -90,7 +90,7 @@ function Cinema({CinemaToBooking}) {
       >
         {filteredCinemas.map((cinema) => (
           <Col span={6} key={cinema._id}>
-            <div className="p-2 card flex flex-col gap-1 cursor-pointer" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }}>
+            <div className="p-2 card flex flex-col gap-1 cursor-pointer" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }} onClick={() => CinemaToBooking(cinema)}>
               <img
                 src={Icon.find((e) => e.title === cinema.founder)?.image}
                 alt="Poster"
@@ -100,14 +100,20 @@ function Cinema({CinemaToBooking}) {
               <div className="gap-1 p-1">
                 <h1
                   className="text-md"
-                  onClick={() => CinemaToBooking(cinema)}
+
+                  style={{ fontSize: "25px" }}
                 >
                   {cinema.name}
                 </h1>
-                <h1
+                <i><h1
                   className="text-md"
                 >
                   Address: {cinema.address}
+                </h1></i>
+                <h1
+                  className="text-md"
+                >
+                  Phone: {cinema.phone}
                 </h1>
               </div>
             </div>

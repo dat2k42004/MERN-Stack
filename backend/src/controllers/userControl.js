@@ -8,9 +8,9 @@ const Register = async (req, res) => {
     try {
 
         //check if user already exists
-        const emailExists = await User.findOne({email: req.body.email});
+        const emailExists = await User.findOne({ email: req.body.email });
         console.log(req.body.email);
-        const nameExists = await User.findOne({username: req.body.username});
+        const nameExists = await User.findOne({ username: req.body.username });
 
         if (nameExists) {
             return res.send({
@@ -49,39 +49,45 @@ const Login = async (req, res) => {
     try {
         //check if user exists
         const user = await User.findOne({
-            $or : [
-                {email: req.body.email},
-                {username: req.body.email},
-            ]
+            $or: [
+                { email: req.body.email },
+                { username: req.body.email },
+            ]   
         });
 
         if (!user) {
             return res.send({
-                success: false, 
+                success: false,
                 message: "User not exists",
             });
         }
+        if (user && !user.active) {
+            return res.send({
+                success: false,
+                message: "User banned",
+            })
+        }
 
         //check password is correct
-        const validPassword =  await bcrypt.compare(
-            req.body.password, 
+        const validPassword = await bcrypt.compare(
+            req.body.password,
             user.password
         );
 
         if (!validPassword) {
             return res.send({
-                success: false, 
+                success: false,
                 message: "Invalid password",
             });
         }
 
         //crreate and assign a token 
-        const token = jwt.sign({userId: user._id}, process.env.jwt_secret, {
+        const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
             expiresIn: "1d",
         })
 
         res.send({
-            success: true, 
+            success: true,
             message: "User logged in successfully!",
             data: token,
         });
@@ -94,13 +100,13 @@ const Login = async (req, res) => {
     }
 };
 
-const GetCurrentUser = async(req, res) => {
+const GetCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select('-password');
         res.send({
-            success: true, 
+            success: true,
             message: "User deatails fetched successfully!",
-            data: user, 
+            data: user,
         })
     }
     catch (error) {
@@ -144,7 +150,7 @@ const DeleteUser = async (req, res) => {
 
 const GetAllUser = async (req, res) => {
     try {
-        const response = await User.find().sort({createAt: -1});
+        const response = await User.find().sort({ createAt: -1 });
         res.send({
             success: true,
             message: "User fetched successfully!",
@@ -171,7 +177,7 @@ const ChangePassword = async (req, res) => {
             return 0;
 
         }
-        
+
         const valid = await bcrypt.compare(
             req.body.old,
             user.password
@@ -190,7 +196,7 @@ const ChangePassword = async (req, res) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.new, salt);
-        await User.updateOne({_id: req.body._id}, {$set: {password: hashedPassword}});
+        await User.updateOne({ _id: req.body._id }, { $set: { password: hashedPassword } });
         const response = await User.findById(req.body._id);
 
         res.send({
@@ -207,11 +213,11 @@ const ChangePassword = async (req, res) => {
 }
 
 module.exports = {
-     Register,
-     Login,
-     GetCurrentUser,
-     UpdateUser,
-     DeleteUser,
-     GetAllUser,
-     ChangePassword
+    Register,
+    Login,
+    GetCurrentUser,
+    UpdateUser,
+    DeleteUser,
+    GetAllUser,
+    ChangePassword
 }
