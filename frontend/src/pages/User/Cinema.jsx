@@ -81,6 +81,7 @@ function Cinema({ CinemaToBooking }) {
         className="search-input"
         placeholder="Search for cinema"
         value={searchText}
+        style={{maxWidth: "500px", marginLeft: "750px"}}
         onChange={(e) => setSearchText(e.target.value)}
       />
 

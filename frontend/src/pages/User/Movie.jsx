@@ -52,6 +52,7 @@ function Movie({ MoviegoToBooking }) {
                     className="search-input"
                     placeholder="Search for movie"
                     value={searchText}
+                    style={{ maxWidth: "500px", marginLeft: "750px" }}
                     onChange={(e) => setSearchText(e.target.value)}
                />
 
@@ -76,8 +77,8 @@ function Movie({ MoviegoToBooking }) {
                                         alt="Poster"
                                         style={{ width: "100%", height: "400px" }}
                                         onClick={() => {
-                                             setSelectedPoster(movie.poster);
-                                             setShowPosterModal(true);
+                                             setSelectedMovie(movie);
+                                             setShowMovieInfoModal(true);
                                         }}
                                    />
                                    <div className="flex gap-1 p-1 flex-col">
@@ -87,7 +88,7 @@ function Movie({ MoviegoToBooking }) {
                                                   setSelectedMovie(movie);
                                                   setShowMovieInfoModal(true);
                                              }}
-                                             style={{fontSize: "25px"}}
+                                             style={{fontSize: "20px"}}
                                         >
                                              {movie.title}
                                         </h1>

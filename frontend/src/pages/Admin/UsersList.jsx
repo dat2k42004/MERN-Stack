@@ -57,21 +57,23 @@ function UsersList() {
                dataIndex: "action",
                render: (text, record) => {
                     return (
-                         <div className="flex gap-1">
-                              <i class="ri-edit-line" style={{ color: "blue" }}
-                                   onClick={() => {
-                                        setSelectedUser(record);
-                                        setFormType("edit");
-                                        setShowUserFormModal(true);
-                                   }}></i>
-                              <i class="ri-delete-bin-line" style={{ color: "red" }}
-                                   onClick={() => {
-                                        setSelectedUser(record);
-                                        setFormType("delete");
-                                        setShowUserFormModal(true);
-                                   }}
-                              ></i>
-                         </div>
+                         <>
+                              {!record.isAdmin && (<div className="flex gap-1">
+                                   <i class="ri-edit-line" style={{ color: "blue" }}
+                                        onClick={() => {
+                                             setSelectedUser(record);
+                                             setFormType("edit");
+                                             setShowUserFormModal(true);
+                                        }}></i>
+                                   <i class="ri-delete-bin-line" style={{ color: "red" }}
+                                        onClick={() => {
+                                             setSelectedUser(record);
+                                             setFormType("delete");
+                                             setShowUserFormModal(true);
+                                        }}
+                                   ></i>
+                              </div>)}
+                         </>
                     )
                }
           }

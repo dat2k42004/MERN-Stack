@@ -136,6 +136,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                         className="search-input"
                                         placeholder="Search for movie"
                                         value={search.movie}
+                                        style={{ maxWidth: "560px", marginLeft: "0" }}
                                         onChange={(e) => setSearch({ ...search, movie: e.target.value })}
                                    />
                                    {movies &&
@@ -224,6 +225,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                         className="search-input"
                                         placeholder="Search for cinema"
                                         value={search.cinema}
+                                        style={{ maxWidth: "560px", marginLeft: "0" }}
                                         onChange={(e) => setSearch({ ...search, cinema: e.target.value })}
                                    />
                                    {cinemas &&
@@ -313,6 +315,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                         type="date"
                                         className="search-input"
                                         value={search.date}
+                                        style={{ maxWidth: "560px", marginLeft: "0" }}
                                         onChange={handleDateChange}
                                    />
                                    {filteredSchedules.map((schedule) => {
