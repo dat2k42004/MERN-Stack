@@ -1,0 +1,311 @@
+/* Admin List Components Common Styles */
+
+.admin-list-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Header Section */
+.admin-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.admin-search-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.admin-search-input {
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  flex: 1;
+}
+
+.admin-search-input:focus {
+  border-color: #009999;
+  box-shadow: 0 0 0 3px rgba(0, 153, 153, 0.1);
+}
+
+.admin-add-button {
+  background: linear-gradient(135deg, #006666 0%, #009999 100%);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 102, 102, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 102, 0.5);
+}
+
+/* Table Styles */
+.admin-list-container .ant-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.admin-list-container .ant-table-thead > tr > th {
+  background: linear-gradient(135deg, #006666 0%, #009999 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 16px 12px;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-list-container .ant-table-tbody > tr {
+  transition: all 0.3s ease;
+}
+
+.admin-list-container .ant-table-tbody > tr:hover {
+  background: rgba(0, 153, 153, 0.05);
+  transform: scale(1.01);
+}
+
+.admin-list-container .ant-table-tbody > tr > td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #333;
+}
+
+.admin-list-container .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+/* Action Icons */
+.admin-action-icons {
+  display: flex;
+  gap: 12px;
+  font-size: 18px;
+}
+
+.admin-action-icons i {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.admin-action-icons .ri-edit-line {
+  color: #009999;
+}
+
+.admin-action-icons .ri-edit-line:hover {
+  background: rgba(0, 153, 153, 0.1);
+  transform: scale(1.2);
+}
+
+.admin-action-icons .ri-delete-bin-line {
+  color: #dc3545;
+}
+
+.admin-action-icons .ri-delete-bin-line:hover {
+  background: rgba(220, 53, 69, 0.1);
+  transform: scale(1.2);
+}
+
+.admin-action-icons .ri-building-line,
+.admin-action-icons .ri-image-fill,
+.admin-action-icons .ri-movie-2-line {
+  color: #6c757d;
+}
+
+.admin-action-icons .ri-building-line:hover,
+.admin-action-icons .ri-image-fill:hover,
+.admin-action-icons .ri-movie-2-line:hover {
+  background: rgba(108, 117, 125, 0.1);
+  transform: scale(1.2);
+  color: #495057;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Pagination */
+.admin-list-container .ant-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.admin-list-container .ant-pagination-item {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s ease;
+}
+
+.admin-list-container .ant-pagination-item:hover {
+  border-color: #009999;
+}
+
+.admin-list-container .ant-pagination-item-active {
+  background: linear-gradient(135deg, #006666 0%, #009999 100%);
+  border-color: #009999;
+}
+
+.admin-list-container .ant-pagination-item-active a {
+  color: white;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RoomsList Specific Styles */
+.rooms-list-container {
+  margin-top: 0;
+}
+
+.rooms-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-back-button {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.admin-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.5);
+}
+
+.rooms-cinema-title {
+  flex: 1;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #006666;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rooms-cinema-title i {
+  font-size: 28px;
+  color: #009999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-list-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search-container {
+    flex-direction: column;
+  }
+
+  .admin-search-input {
+    min-width: 100%;
+  }
+
+  .admin-add-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-list-container .ant-table {
+    font-size: 12px;
+  }
+
+  .admin-list-container .ant-table-thead > tr > th,
+  .admin-list-container .ant-table-tbody > tr > td {
+    padding: 10px 8px;
+  }
+
+  .admin-action-icons {
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  .rooms-list-header {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .rooms-cinema-title {
+    font-size: 18px;
+    order: -1;
+    width: 100%;
+  }
+
+  .admin-back-button,
+  .rooms-list-header .admin-add-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

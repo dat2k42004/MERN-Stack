@@ -1,0 +1,137 @@
+:root {
+    --colour--primary: #002E2A;
+    --colour--secondary: #e6b412;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #b1b1b1;
+}
+
+.w-400 {
+    width: 400px;
+}
+
+.content {
+    min-height: 80vh;
+    border: 1px solid #b1b1b1;
+
+}
+
+.underline {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.search-input {
+    height: 50px;
+    border-radius: 5px;
+}
+
+i {
+    font-size: 20px;
+}
+
+table {
+    border: 1px solid #b1b1b1;
+}
+
+thead th {
+    border-bottom: 1px solid #b1b1b1 !important;
+    text-transform: uppercase;
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.txt-alg {
+    text-align: center;
+}
+
+/* loader */
+
+.loader-parent {
+    position: fixed;
+    background-color: black;
+    inset: 0;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+}
+
+.loader {   
+    height: 30px;
+    width: 30px;
+    border: 3px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: loader-anim 1s linear infinite;
+}
+
+.hover:hover {
+    background-color: lightskyblue;
+}
+
+/*loader animation*/
+
+@keyframes loader-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* To make the container full-width and have a fixed height */
+.container {
+    display: flex;
+    flex-direction: row;  /* Xếp các box theo hàng ngang */
+    width: 100vw; /* Full chiều rộng của màn hình */
+    height: 150px; /* Chiều cao cố định cho toàn bộ */
+    background-color: #f7fafc; /* Màu nền sáng */
+  }
+  
+  /* Các box chiếm 1/3 chiều rộng của container */
+  .box {
+    flex: 1; /* Mỗi box chiếm 1 phần bằng nhau */
+    height: 100%; /* Chiều cao bằng với container */
+    display: flex;
+    flex-direction: column; /* Căn chỉnh nội dung theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều dọc */
+    align-items: center; /* Căn giữa theo chiều ngang */
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #e2e8f0; /* Border nhẹ */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho các box */
+    border-radius: 8px; /* Bo góc cho các box */
+  }
+  
+  .box h2 {
+    font-size: 1.25rem; /* Kích thước chữ cho tiêu đề */
+    font-weight: 600;
+    color: #2d3748; /* Màu chữ cho tiêu đề */
+    margin-bottom: 10px;
+  }
+  
+  .box p {
+    font-size: 1rem;
+    color: #4a5568; /* Màu chữ cho nội dung */
+  }
+  
+  /* Tùy chọn: Đổi màu nền khi hover lên một box */
+  .box:hover {
+    background-color: #edf2f7;
+    cursor: pointer; /* Thêm con trỏ khi hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn khi hover */
+  }
+
+  button:hover {
+    background-color: lightskyblue;
+  }
+  
