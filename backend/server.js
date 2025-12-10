@@ -1,19 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const dbConfig = require("./config/dbConfig");
+const dbConfig = require("./src/config/dbConfig");
 const app = express();
 const POST = process.env.PORT || 8080;
 
-const userRoute = require("./routes/usersRoute");
-const movieRoute = require("./routes/moviesRoute");
-const cinemaRoute = require("./routes/cinemasRoute");
-const roomRoute = require("./routes/roomsRoute");
-const scheduleRoute = require("./routes/schedulesRoute");
-const promotionRoute = require("./routes/promotionsRoute");
-const serviceRoute = require("./routes/servicesRoute");
-const ticketRoute = require("./routes/ticketRoute");
-const billRoute = require("./routes/billsRoute");
+const userRoute = require("./src/routes/usersRoute");
+const movieRoute = require("./src/routes/moviesRoute");
+const cinemaRoute = require("./src/routes/cinemasRoute");
+const roomRoute = require("./src/routes/roomsRoute");
+const scheduleRoute = require("./src/routes/schedulesRoute");
+const promotionRoute = require("./src/routes/promotionsRoute");
+const serviceRoute = require("./src/routes/servicesRoute");
+const ticketRoute = require("./src/routes/ticketRoute");
+const billRoute = require("./src/routes/billsRoute");
 app.use(express.json());
 app.use(cors());
 
