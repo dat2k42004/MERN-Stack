@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../redux/loadersSlide";
 import Button from '../../components/Button';
 import moment from 'moment';
+import '../../assets/css/ChoseSeat.css';
 // import History from "./History";
 
 function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelectedSchedule, isActive, user, BookingToHistory }) {
@@ -20,6 +21,8 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
   const dispatch = useDispatch();
   const [selectedService, setSelectedService] = useState([]);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
+
+
   // const [showHistory, setShowHistory] = useState(false);
 
   // const [user, setUser] = useState();
@@ -127,6 +130,10 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
 
   const handleBooking = async (e) => {
     e.preventDefault();
+    if (!user) {
+      message.error("Please login to book ticket");
+      return;
+    }
     const totalCost = (selectedSeats.length * (tickets[0]?.price || 0) + selectedService.reduce((cur, arr) => cur + arr.price * arr.quantity, 0)) * (selectedPromotion ? (100 - selectedPromotion.rate) : 100) / 100;
     const payload = {
       date: moment(new Date()).format("YYYY-MM-DD HH:mm"),
@@ -161,76 +168,35 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
   }, []);
 
   return (
-    <div>
-      {/* <Button
-        title="Back"
-        variant="outlined"
-        onClick={() => {
-          setShowChoseSeat(false);
-          setSelectedSchedule(null);
-        }}
-      /> */}
+    <div className="chose-seat-page">
       <button
-        // disabled={selectedSeats.length === 0}
-        style={{
-          padding: "6px 12px",
-          backgroundColor: "#28a745",
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          cursor: "pointer",
-          fontWeight: "bold",
-          fontSize: "14px",
-          transition: "0.3s",
-        }}
+        className="back-btn"
         onClick={() => {
           setShowChoseSeat(false);
           setSelectedSchedule(null);
-        }}
-      >Back</button>
-      <div
-        className="p-2 card"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: "4px",
-          boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-          width: "50%",
-          margin: "0 auto",
-          padding: "8px 16px", // giảm padding
-          height: "80px", // đặt chiều cao cụ thể (hoặc bỏ nếu muốn tự co)
         }}
       >
-        {/* Cột trái */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          {/* <h2 style={{ margin: 0 }}>Cost</h2> */}
-          <h1 style={{ margin: 0, fontSize: "20px" }}>
-            Total: {
+        <span className="btn-icon">←</span>
+        Quay lại
+      </button>
+      <div className="cost-summary">
+        <div className="total-cost">
+          <span className="cost-label">💰 Tổng thanh toán:</span>
+          <span className="cost-value">
+            {
               (selectedSeats.length * (tickets[0]?.price || 0) + selectedService.reduce((cur, arr) => cur + arr.price * arr.quantity, 0)) * (selectedPromotion ? (100 - selectedPromotion.rate) : 100) / 100
             } VND
-          </h1>
+          </span>
         </div>
-
-        {/* Cột phải */}
         <button
           disabled={selectedSeats.length === 0}
-          style={{
-            padding: "6px 12px",
-            backgroundColor: selectedSeats.length === 0 ? "#ccc" : "#28a745",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: selectedSeats.length === 0 ? "not-allowed" : "pointer",
-            fontWeight: "bold",
-            fontSize: "14px",
-            transition: "0.3s",
-          }}
+          className={`booking-btn ${selectedSeats.length === 0 ? 'disabled' : ''}`}
           onClick={(e) => {
             handleBooking(e);
           }}
         >
-          BOOKING
+          <span className="btn-icon">🎫</span>
+          ĐẶT VÉ
         </button>
       </div>
 
@@ -238,95 +204,39 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
       <Row gutter={[20, 20]} className="mt-2">
 
         <Col span={12}>
-          <div
-            className="p-2 card flex flex-col gap-1"
-            style={{
-              borderRadius: "4px",
-              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <h2 className="text-xl mb-2">Seat</h2>
+          <div className="seat-section">
+            <h2 className="section-title">🪑 Chọn ghế ngồi</h2>
 
-            <div style={{ display: "flex", gap: "20px", marginBottom: "16px" }}>
-              {/* Ghế đã chọn */}
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <button
-                  disabled
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: "#52c41a", // xanh lá
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "default"
-                  }}
-                />
-                <span>Selected</span>
+            <div className="seat-legend">
+              <div className="legend-item">
+                <div className="seat-demo selected"></div>
+                <span>Đã chọn</span>
               </div>
-
-              {/* Ghế đã được đặt */}
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <button
-                  disabled
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: "#d9d9d9", // xám
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "default"
-                  }}
-                />
-                <span>Booked</span>
+              <div className="legend-item">
+                <div className="seat-demo booked"></div>
+                <span>Đã đặt</span>
               </div>
-
-              {/* Ghế trống */}
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <button
-                  disabled
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: "#1890ff", // xanh dương
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "default"
-                  }}
-                />
-                <span>Available</span>
+              <div className="legend-item">
+                <div className="seat-demo available"></div>
+                <span>Còn trống</span>
               </div>
             </div>
 
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(10, 1fr)",
-                gap: "10px",
+            <div className="screen-indicator">MÀN HÌNH</div>
 
-              }}
-            >
+            <div className="seat-grid">
               {tickets.map((ticket) => (
                 <button
                   key={ticket._id}
                   onClick={() => handleSeatToggle(ticket._id)}
-                  disabled={ticket.status === true} // không cho chọn nếu đã đặt
-                  style={{
-                    padding: "15px",
-                    fontWeight: "bold",
-                    borderRadius: "6px",
-                    width: "60px",
-                    margin: "10px",
-                    backgroundColor: ticket.status
-                      ? "#d9d9d9" // đã đặt
-                      : selectedSeats.includes(ticket._id)
-                        ? "#52c41a" // đang chọn
-                        : "#1890ff", // bình thường
-                    color: ticket.status ? "#888" : "#fff",
-                    border: "none",
-                    cursor: ticket.status ? "not-allowed" : "pointer",
-                    transition: "0.3s",
-                  }}
+                  disabled={ticket.status === true}
+                  className={`seat-btn ${ticket.status
+                    ? "booked"
+                    : selectedSeats.includes(ticket._id)
+                      ? "selected"
+                      : "available"
+                    }`}
                 >
                   {ticket.seat}
                 </button>
@@ -336,65 +246,21 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
         </Col>
 
         <Col span={6}>
-          <div
-            className="p-2 card flex flex-col gap-1"
-            style={{
-              borderRadius: "4px",
-              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <h2 >Service</h2>
-            {services && services.map((e) => (
-              <div
-                className="p-2 card flex flex-row gap-1"
-                style={{
-                  borderRadius: "4px",
-                  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                  width: "90%",
-                  height: "40px"
-                }}
-              >
-                <div
-                  // className="p-2 card flex flex-col gap-1"
-                  className="flex gap-2"
-                  style={{
-                    borderRadius: "4px",
-                    // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                    border: "none",
-                    width: "90%",
-                    height: "10px"
-                  }}
-                >
-                  <strong>{e.type}</strong>
-                </div>
-                <div
-                  // className="p-2 card flex flex-col gap-1"
-                  className="flex gap-2"
-                  style={{
-                    borderRadius: "4px",
-                    // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                    border: "none",
-                    width: "90%",
-                    height: "10px"
-                  }}
-                >
-                  <strong>Price: {e.price}</strong>
-                </div>
-                <div className="flex gap-2">
+          <div className="service-section">
+            <h2 className="section-title">🍿 Dịch vụ</h2>
+            <div className="service-list">
+              {services && services.map((e) => (
+                <div key={e._id} className="service-item">
+                  <div className="service-info">
+                    <div className="service-name">{e.type}</div>
+                    <div className="service-price">{e.price} VND</div>
+                  </div>
                   <input
                     type="number"
                     min="0"
                     placeholder="0"
                     disabled={selectedSeats.length === 0}
-                    // value={
-                    //   selectedServices.find((s) => s._id === services._id)?.quantity || ""
-                    // }
-                    style={{
-                      borderRadius: "4px",
-                      width: "40px",
-                      backgroundColor: selectedSeats.length === 0 ? "#f5f5f5" : "white",
-                      cursor: selectedSeats.length === 0 ? "not-allowed" : "text"
-                    }}
+                    className={`quantity-input ${selectedSeats.length === 0 ? 'disabled' : ''}`}
                     onChange={(event) => {
                       const { value } = event.target;
                       setSelectedService((prevSelectedServices) =>
@@ -405,83 +271,59 @@ function ChoseSeat({ showChoseSeat, setShowChoseSeat, selectedSchedule, setSelec
                     }}
                   />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </Col>
 
         <Col span={6}>
-          <div className="p-2 card flex flex-col gap-1" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }}>
-            <h2 className="text-xl">Promotion</h2>
-            {promotions &&
-              promotions
-                .map((promotion) => (
+          <div className="promotion-section">
+            <h2 className="section-title">🎁 Khuyến mãi</h2>
+            <div className="promotion-list">
+              {promotions &&
+                promotions.map((promotion) => (
                   <div
                     key={promotion._id}
-                    className={`p-2 cursor-pointer flex items-center gap-4 ${selectedPromotion?._id === promotion._id ? 'bg-blue-100' : 'bg-white'}`}
-                    style={{
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
-                      width: "90%",
-                      minHeight: "120px",
-                      marginBottom: "10px",
-                    }}
+                    className={`promotion-card ${selectedPromotion?._id === promotion._id ? 'selected' : ''}`}
                   >
-
-                    <div
-                      className="p-2 card flex flex-row gap-1"
-                      style={{
-                        // borderRadius: "4px",
-                        // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                        border: "none",
-                        width: "80%"
-                      }}
-                    >
-                      <div className="flex flex-col">
-                        <strong>{promotion.name}</strong>
-                        <strong>Discound: {promotion.rate}%</strong>
-                        <strong>UntilDate: {moment(promotion.date).format("DD-MM-YYYY")}</strong>
-                        <strong>Number: {promotion.number}</strong>
+                    <div className="promotion-info">
+                      <div className="promotion-name">{promotion.name}</div>
+                      <div className="promotion-details">
+                        <div className="detail-row">
+                          <span className="detail-icon">🏷️</span>
+                          <span>Giảm: {promotion.rate}%</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-icon">📅</span>
+                          <span>HSD: {moment(promotion.date).format("DD/MM/YYYY")}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-icon">🎟️</span>
+                          <span>Còn: {promotion.number}</span>
+                        </div>
                       </div>
-
                     </div>
-                    <div className="flex flex-col justify-end">
-                      {/* <Button title="Chose" variant="outlined" disabled={selectedSeats.length === 0}  style={{ flex: 1 }} /> */}
+                    <div className="promotion-actions">
                       <button
                         disabled={selectedSeats.length === 0 || promotion.number <= 0}
-                        style={{
-                          padding: "6px 12px",
-                          backgroundColor: selectedSeats.length === 0 ? "#ccc" : "#28a745",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "6px",
-                          cursor: selectedSeats.length === 0 ? "not-allowed" : "pointer",
-                          fontWeight: "bold",
-                          fontSize: "14px",
-                          transition: "0.3s",
-                        }}
+                        className={`action-btn choose-promo-btn ${selectedSeats.length === 0 || promotion.number <= 0 ? 'disabled' : ''}`}
                         onClick={() => setSelectedPromotion(promotion)}
-                      >Chose</button>
-                      <br />
-                      {/* <Button title="Cancel" variant="outlined"  style={{ flex: 1 }} /> */}
+                      >
+                        <span className="btn-icon">✓</span>
+                        Chọn
+                      </button>
                       <button
                         disabled={selectedSeats.length === 0}
-                        style={{
-                          padding: "6px 12px",
-                          backgroundColor: selectedSeats.length === 0 ? "#ccc" : "#28a745",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "6px",
-                          cursor: selectedSeats.length === 0 ? "not-allowed" : "pointer",
-                          fontWeight: "bold",
-                          fontSize: "14px",
-                          transition: "0.3s",
-                        }}
+                        className={`action-btn cancel-promo-btn ${selectedSeats.length === 0 ? 'disabled' : ''}`}
                         onClick={() => { setSelectedPromotion(null); }}
-                      >Cancel</button>
+                      >
+                        <span className="btn-icon">✕</span>
+                        Hủy
+                      </button>
                     </div>
                   </div>
                 ))}
+            </div>
           </div>
         </Col>
 

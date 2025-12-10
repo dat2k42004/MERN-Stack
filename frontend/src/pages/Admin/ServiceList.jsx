@@ -3,10 +3,11 @@ import Button from "../../components/Button"
 import ServiceForm from './ServiceForm';
 import { useState } from "react";
 // import moment from "moment";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { useDispatch } from 'react-redux';
 import { ShowLoading, HideLoading } from '../../redux/loadersSlide';
 import { GetAllServices } from '../../apicalls/services';
+import '../../assets/css/AdminList.css';
 
 function ServicesList() {
      const [services, setServices] = useState([]);
@@ -56,7 +57,11 @@ function ServicesList() {
                title: "Active",
                dataIndex: "active",
                render: (text, record) => {
-                    return record.active ? "Action" : "Stop";
+                    return (
+                         <span className={`status-badge ${record.active ? 'active' : 'inactive'}`}>
+                              {record.active ? "Active" : "Inactive"}
+                         </span>
+                    );
                }
           },
           {
@@ -64,14 +69,14 @@ function ServicesList() {
                dataIndex: "action",
                render: (text, record) => {
                     return (
-                         <div className="flex gap-1">
-                              <i class="ri-edit-line" style={{ color: "blue" }}
+                         <div className="admin-action-icons">
+                              <i className="ri-edit-line"
                                    onClick={() => {
                                         setSelectedService(record);
                                         setFormType("edit");
                                         setShowServiceFormModal(true);
                                    }}></i>
-                              <i class="ri-delete-bin-line" style={{ color: "red" }}
+                              <i className="ri-delete-bin-line"
                                    onClick={() => {
                                         setSelectedService(record);
                                         setFormType("delete");
@@ -96,55 +101,29 @@ function ServicesList() {
 
 
      return (
-          <div>
-               <div className="flex justify-between items-center mb-4">
-                    <form  style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className="admin-list-container">
+               <div className="admin-list-header">
+                    <div className="admin-search-container">
                          <input
                               type="text"
-                              name="serviceKey"
-                              placeholder="Search service by title..."
+                              className="admin-search-input"
+                              placeholder="🔍 Tìm kiếm dịch vụ..."
                               value={searchText}
                               onChange={(e) => setSearchText(e.target.value)}
-                              style={{
-                                   height: '40px',
-                                   padding: '0 12px',
-                                   borderRadius: '4px',
-                                   border: '1px solid black',
-                                   fontSize: '14px',
-                                   boxSizing: 'border-box',
-                                   minWidth: '250px'
-                              }}
                          />
-                         {/* <button
-                              type="submit"
-                              style={{
-                                   height: '40px',
-                                   padding: '0 16px',
-                                   backgroundColor: 'white',
-                                   color: 'black',
-                                   border: '1px solid black',
-                                   borderRadius: '4px',
-                                   cursor: 'pointer',
-                                   fontSize: '14px',
-                                   boxSizing: 'border-box'
-                              }}
-                         >
-                              Search
-                         </button> */}
-                         <br />
-                    </form>
+                    </div>
 
-
-                    <Button
-                         title="Add Service"
-                         variant="outlined"
+                    <button
+                         className="admin-add-button"
                          onClick={() => {
                               setShowServiceFormModal(true);
                               setFormType("add");
                          }}
-                    />
+                    >
+                         <i className="ri-add-line"></i>
+                         Thêm Dịch Vụ
+                    </button>
                </div>
-               <br />
 
                <Table
                     columns={columns}
@@ -152,6 +131,7 @@ function ServicesList() {
                          service.type.toLowerCase().includes(searchText.toLowerCase())
                     ) : services}
                     rowKey="_id"
+                    pagination={{ pageSize: 10 }}
                />
 
                {showServiceFormModal &&

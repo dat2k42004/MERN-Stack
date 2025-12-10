@@ -4,7 +4,7 @@ const router = require("express").Router();
 // const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
 
-const {Register, Login, GetCurrentUser, UpdateUser, DeleteUser, GetAllUser, ChangePassword} = require("../controllers/userControl");
+const { Register, Login, GetCurrentUser, UpdateUser, DeleteUser, GetAllUser, ChangePassword } = require("../controllers/userControl");
 
 // register new user
 

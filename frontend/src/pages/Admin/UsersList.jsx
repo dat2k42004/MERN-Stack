@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import UserForm from './UserForm';
 import { useState } from "react";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { useDispatch } from 'react-redux';
 import { ShowLoading, HideLoading } from '../../redux/loadersSlide';
 import { GetAllUsers } from '../../apicalls/users';
+import '../../assets/css/AdminList.css';
 
 function UsersList() {
      const [Users, setUsers] = useState([]);
@@ -49,7 +50,11 @@ function UsersList() {
                title: "Active",
                dataIndex: "active",
                render: (text, record) => {
-                    return record.active ? "Action" : "Stop";
+                    return (
+                         <span className={`status-badge ${record.active ? 'active' : 'inactive'}`}>
+                              {record.active ? "Active" : "Inactive"}
+                         </span>
+                    );
                }
           },
           {
@@ -58,14 +63,14 @@ function UsersList() {
                render: (text, record) => {
                     return (
                          <>
-                              {!record.isAdmin && (<div className="flex gap-1">
-                                   <i class="ri-edit-line" style={{ color: "blue" }}
+                              {!record.isAdmin && (<div className="admin-action-icons">
+                                   <i className="ri-edit-line"
                                         onClick={() => {
                                              setSelectedUser(record);
                                              setFormType("edit");
                                              setShowUserFormModal(true);
                                         }}></i>
-                                   <i class="ri-delete-bin-line" style={{ color: "red" }}
+                                   <i className="ri-delete-bin-line"
                                         onClick={() => {
                                              setSelectedUser(record);
                                              setFormType("delete");
@@ -79,8 +84,13 @@ function UsersList() {
           }
      ]
      return (
-          <div>
-               <Table columns={columns} dataSource={Users} />
+          <div className="admin-list-container">
+               <Table
+                    columns={columns}
+                    dataSource={Users}
+                    rowKey="_id"
+                    pagination={{ pageSize: 10 }}
+               />
 
                {showUserFormModal &&
                     <UserForm

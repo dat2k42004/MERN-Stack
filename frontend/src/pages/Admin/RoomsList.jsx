@@ -1,11 +1,12 @@
 import React from 'react';
 import Button from '../../components/Button';
 import { useState, useEffect } from "react";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { useDispatch } from 'react-redux';
 import { ShowLoading, HideLoading } from '../../redux/loadersSlide';
 import { GetAllRooms } from '../../apicalls/rooms';
 import RoomForm from './RoomForm';
+import '../../assets/css/AdminList.css';
 
 function RoomsList({ showRoomModal, setShowRoomModal, selectedCinema, setSelectedCinema }) {
      const [rooms, setRooms] = useState([]);
@@ -59,7 +60,11 @@ function RoomsList({ showRoomModal, setShowRoomModal, selectedCinema, setSelecte
                title: "Active",
                dataIndex: "active",
                render: (text, record) => {
-                    return record.active ? "Action" : "Stop";
+                    return (
+                         <span className={`status-badge ${record.active ? 'active' : 'inactive'}`}>
+                              {record.active ? "Active" : "Inactive"}
+                         </span>
+                    );
                }
           },
           {
@@ -67,14 +72,14 @@ function RoomsList({ showRoomModal, setShowRoomModal, selectedCinema, setSelecte
                dataIndex: "action",
                render: (text, record) => {
                     return (
-                         <div className="flex gap-1">
-                              <i class="ri-edit-line" style={{ color: "blue" }}
+                         <div className="admin-action-icons">
+                              <i className="ri-edit-line"
                                    onClick={() => {
                                         setSelectedRoom(record);
                                         setFormType("edit");
                                         setShowRoomFormModal(true);
                                    }}></i>
-                              <i class="ri-delete-bin-line" style={{ color: "red" }}
+                              <i className="ri-delete-bin-line"
                                    onClick={() => {
                                         setSelectedRoom(record);
                                         setFormType("delete");
@@ -87,29 +92,42 @@ function RoomsList({ showRoomModal, setShowRoomModal, selectedCinema, setSelecte
           }
      ]
      return (
-          <div>
-               <div className="flex justify-between items-center mb-4">
-                    <Button
-                         title="Back"
-                         variant="outlined"
+          <div className="admin-list-container rooms-list-container">
+               <div className="rooms-list-header">
+                    <button
+                         className="admin-back-button"
                          onClick={() => {
                               setShowRoomModal(false);
                               setSelectedCinema(null);
                          }}
-                    />
+                    >
+                         <i className="ri-arrow-left-line"></i>
+                         Quay Lại
+                    </button>
 
-                    <h2 className="text-xl font-semibold">{selectedCinema.name}</h2>
+                    <h2 className="rooms-cinema-title">
+                         <i className="ri-building-line"></i>
+                         {selectedCinema.name}
+                    </h2>
 
-                    <Button
-                         title="Add Room"
-                         variant="outlined"
+                    <button
+                         className="admin-add-button"
                          onClick={() => {
                               setShowRoomFormModal(true);
                               setFormType("add");
                          }}
-                    />
+                    >
+                         <i className="ri-add-line"></i>
+                         Thêm Phòng
+                    </button>
                </div>
-               <Table columns={columns} dataSource={rooms} />
+
+               <Table
+                    columns={columns}
+                    dataSource={rooms}
+                    rowKey="_id"
+                    pagination={{ pageSize: 10 }}
+               />
 
                {showRoomFormModal &&
                     <RoomForm

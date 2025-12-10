@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 
+
+
 const Register = async (req, res) => {
     try {
 
@@ -52,7 +54,7 @@ const Login = async (req, res) => {
             $or: [
                 { email: req.body.email },
                 { username: req.body.email },
-            ]   
+            ]
         });
 
         if (!user) {
@@ -81,7 +83,7 @@ const Login = async (req, res) => {
             });
         }
 
-        //crreate and assign a token 
+        //create and assign a token 
         const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
             expiresIn: "1d",
         })

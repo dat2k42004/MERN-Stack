@@ -3,12 +3,13 @@ import Button from "../../components/Button"
 import MovieForm from './MovieForm';
 import { useState } from "react";
 import moment from "moment";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { useDispatch } from 'react-redux';
 import { ShowLoading, HideLoading } from '../../redux/loadersSlide';
 import { GetAllMovies } from '../../apicalls/movies';
 import TrailerModal from '../../components/TrailerModel';
 import PosterModal from '../../components/PosterModel';
+import '../../assets/css/AdminList.css';
 function MoviesList() {
      const [movies, setMovies] = useState([]);
      const [showMovieFormModal, setShowMovieFormModal] = useState(false);
@@ -137,7 +138,11 @@ function MoviesList() {
                title: "Active",
                dataIndex: "active",
                render: (text, record) => {
-                    return record.active ? "Action" : "Stop";
+                    return (
+                         <span className={`status-badge ${record.active ? 'active' : 'inactive'}`}>
+                              {record.active ? "Active" : "Inactive"}
+                         </span>
+                    );
                }
           },
           {
@@ -145,14 +150,14 @@ function MoviesList() {
                dataIndex: "action",
                render: (text, record) => {
                     return (
-                         <div className="flex gap-1">
-                              <i class="ri-edit-line" style={{ color: "blue" }}
+                         <div className="admin-action-icons">
+                              <i className="ri-edit-line"
                                    onClick={() => {
                                         setSelectedMovie(record);
                                         setFormType("edit");
                                         setShowMovieFormModal(true);
                                    }}></i>
-                              <i class="ri-delete-bin-line" style={{ color: "red" }}
+                              <i className="ri-delete-bin-line"
                                    onClick={() => {
                                         setSelectedMovie(record);
                                         setFormType("delete");
@@ -177,59 +182,35 @@ function MoviesList() {
 
 
      return (
-          <div>
-               <div className="flex justify-between items-center mb-4">
-                    <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className="admin-list-container">
+               <div className="admin-list-header">
+                    <div className="admin-search-container">
                          <input
                               type="text"
-                              name="movieKey"
-                              placeholder="Search movie by title..."
+                              className="admin-search-input"
+                              placeholder="🔍 Tìm kiếm phim theo tên..."
                               value={searchText}
                               onChange={(e) => setSearchText(e.target.value)}
-                              style={{
-                                   height: '40px',
-                                   padding: '0 12px',
-                                   borderRadius: '4px',
-                                   border: '1px solid black',
-                                   fontSize: '14px',
-                                   boxSizing: 'border-box',
-                                   minWidth: '250px'
-                              }}
                          />
-                         {/* <button
-                              type="submit"
-                              style={{
-                                   height: '40px',
-                                   padding: '0 16px',
-                                   backgroundColor: 'white',
-                                   color: 'black',
-                                   border: '1px solid black',
-                                   borderRadius: '4px',
-                                   cursor: 'pointer',
-                                   fontSize: '14px',
-                                   boxSizing: 'border-box'
-                              }}
-                         >
-                              Search
-                         </button> */}
-                    </form>
+                    </div>
 
-
-                    <Button
-                         title="Add Movie"
-                         variant="outlined"
+                    <button
+                         className="admin-add-button"
                          onClick={() => {
                               setShowMovieFormModal(true);
                               setFormType("add");
                          }}
-                    />
+                    >
+                         <i className="ri-add-line"></i>
+                         Thêm Phim Mới
+                    </button>
                </div>
 
-               <br />
                <Table
                     columns={columns}
                     dataSource={searchText.length === 0 ? movies : movies.filter((movie) => movie.title.toLowerCase().includes(searchText.toLowerCase()))}
                     rowKey="_id"
+                    pagination={{ pageSize: 10 }}
                />
 
                {showMovieFormModal &&

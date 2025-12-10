@@ -5,6 +5,7 @@ import { HideLoading, ShowLoading } from "../../redux/loadersSlide";
 import { GetAllCinemas } from "../../apicalls/cinemas";
 import Button from "../../components/Button";
 import { Icon } from "../../components/Icon";
+import '../../assets/css/Cinema.css';
 // import CinemaDetail from "../../components/CinemaDetail";
 
 
@@ -75,47 +76,56 @@ function Cinema({ CinemaToBooking }) {
     getData();
   }, []);
   return (
-    <div>
-      <input
-        type="text"
-        className="search-input"
-        placeholder="Search for cinema"
-        value={searchText}
-        style={{maxWidth: "500px", marginLeft: "750px"}}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
+    <div className="cinema-page">
+      <div className="search-container">
+        <input
+          type="text"
+          className="cinema-search-input"
+          placeholder="🔍 Tìm kiếm rạp chiếu..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </div>
 
       <Row
-        gutter={[20, 20]}
-        className="mt-2"
+        gutter={[24, 24]}
+        className="mt-2 cinema-grid"
       >
         {filteredCinemas.map((cinema) => (
           <Col span={6} key={cinema._id}>
-            <div className="p-2 card flex flex-col gap-1 cursor-pointer" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }} onClick={() => CinemaToBooking(cinema)}>
-              <img
-                src={Icon.find((e) => e.title === cinema.founder)?.image}
-                alt="Poster"
-                // className="w-16 h-20 object-cover cursor-pointer rounded"
-                style={{ width: "100%", height: 400 }}
-              />
-              <div className="gap-1 p-1">
-                <h1
-                  className="text-md"
+            <div className="cinema-card" onClick={() => { setSearchText(""); CinemaToBooking(cinema) }}>
+              <div className="cinema-logo-wrapper">
+                <img
+                  src={Icon.find((e) => e.title === cinema.founder)?.image}
+                  alt={cinema.name}
+                  className="cinema-logo"
+                />
+                <div className="cinema-overlay">
+                  <div className="overlay-content">
+                    <h3 className="overlay-title">{cinema.name}</h3>
+                    <p className="overlay-text">Nhấn để xem lịch chiếu</p>
+                  </div>
+                </div>
+              </div>
 
-                  style={{ fontSize: "25px" }}
-                >
+              <div className="cinema-info">
+                <h2 className="cinema-name">
                   {cinema.name}
-                </h1>
-                <i><h1
-                  className="text-md"
-                >
-                  Address: {cinema.address}
-                </h1></i>
-                <h1
-                  className="text-md"
-                >
-                  Phone: {cinema.phone}
-                </h1>
+                </h2>
+                <div className="cinema-details">
+                  <div className="detail-item">
+                    <span className="detail-icon">📍</span>
+                    <span className="detail-text">{cinema.address}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="detail-icon">📞</span>
+                    <span className="detail-text">{cinema.phone}</span>
+                  </div>
+                </div>
+                <button className="cinema-btn view-schedule-btn">
+                  <span className="btn-icon">🎬</span>
+                  Xem lịch chiếu
+                </button>
               </div>
             </div>
           </Col>

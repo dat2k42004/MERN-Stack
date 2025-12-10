@@ -7,6 +7,7 @@ import TrailerModal from '../../components/TrailerModel';
 import PosterModal from '../../components/PosterModel';
 import Button from "../../components/Button";
 import MovieDetail from "../../components/MovieDetail";
+import '../../assets/css/Movie.css';
 
 function Movie({ MoviegoToBooking }) {
      const [movies, setMovies] = useState([]);
@@ -46,118 +47,78 @@ function Movie({ MoviegoToBooking }) {
           getData();
      }, []);
      return (
-          <div>
-               <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search for movie"
-                    value={searchText}
-                    style={{ maxWidth: "500px", marginLeft: "750px" }}
-                    onChange={(e) => setSearchText(e.target.value)}
-               />
+          <div className="movie-page">
+               <div className="search-container">
+                    <input
+                         type="text"
+                         className="movie-search-input"
+                         placeholder="🔍 Tìm kiếm phim..."
+                         value={searchText}
+                         onChange={(e) => setSearchText(e.target.value)}
+                    />
+               </div>
 
                <Row
-                    gutter={[20, 20]}
-                    className="mt-2"
+                    gutter={[24, 24]}
+                    className="mt-2 movie-grid"
                >
                     {filteredMovies.map((movie) => (
                          <Col span={6} key={movie._id}>
-                              <div
-                                   className="p-2 card flex flex-col gap-2 cursor-pointer justify-between"
-                                   style={{
-                                        borderRadius: "4px",
-                                        height: "580px", // chỉnh tùy theo thiết kế mong muốn
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)"
-                                   }}
-                              >
-                                   <img
-                                        src={movie.poster}
-                                        alt="Poster"
-                                        style={{ width: "100%", height: "400px" }}
-                                        onClick={() => {
-                                             setSelectedMovie(movie);
-                                             setShowMovieInfoModal(true);
-                                        }}
-                                   />
-                                   <div className="flex gap-1 p-1 flex-col">
-                                        <h1
-                                             className="text-md"
+                              <div className="movie-card">
+                                   <div className="movie-poster-wrapper">
+                                        <img
+                                             src={movie.poster}
+                                             alt={movie.title}
+                                             className="movie-poster"
                                              onClick={() => {
                                                   setSelectedMovie(movie);
                                                   setShowMovieInfoModal(true);
                                              }}
-                                             style={{fontSize: "20px"}}
-                                        >
-                                             {movie.title}
-                                        </h1>
-
-                                        <div className="flex gap-2">
-                                             {/* <Button
-                                                  title="Watch Trailer"
-                                                  variant="outlined"
-                                                  onClick={() => {
-                                                       const match = movie.trailer.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/);
-                                                       if (match) {
-                                                            setSelectedTrailer(match[1]);
-                                                            setShowTrailerModal(true);
-                                                       }
-                                                  }}
-                                                  style={{ flex: 1 }}
-                                             />
-
-                                             <Button
-                                                  title="Booking"
-                                                  variant="outlined"
-                                                  onClick={() => MoviegoToBooking(movie)}
-                                                  style={{ flex: 1 }}
-                                             /> */}
-
-                                             <button
-                                                  // disabled={selectedSeats.length === 0}
-                                                  style={{
-                                                       padding: "6px 12px",
-                                                       backgroundColor: "#28a745",
-                                                       color: "white",
-                                                       border: "none",
-                                                       borderRadius: "6px",
-                                                       cursor: "pointer",
-                                                       fontWeight: "bold",
-                                                       fontSize: "14px",
-                                                       transition: "0.3s",
-                                                  }}
-                                                  onClick={() => {
-                                                       const match = movie.trailer.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/);
-                                                       if (match) {
-                                                            setSelectedTrailer(match[1]);
-                                                            setShowTrailerModal(true);
-                                                       }
-                                                  }}
-                                             >Trailer</button>
-                                             <br />
-                                             <button
-                                                  className="hover"
-                                                  // disabled={selectedSeats.length === 0}
-                                                  style={{
-                                                       padding: "6px 12px",
-                                                       backgroundColor: "#28a745",
-                                                       color: "white",
-                                                       border: "none",
-                                                       borderRadius: "6px",
-                                                       cursor: "pointer",
-                                                       fontWeight: "bold",
-                                                       fontSize: "14px",
-                                                       transition: "0.3s",
-                                                  }}
-                                                  onClick={() => MoviegoToBooking(movie)}
-                                             >Book</button>
+                                        />
+                                        <div className="movie-overlay">
+                                             <div className="overlay-content">
+                                                  <h3 className="overlay-title">{movie.title}</h3>
+                                                  <p className="overlay-text">Nhấn để xem chi tiết</p>
+                                             </div>
                                         </div>
                                    </div>
 
+                                   <div className="movie-info">
+                                        <h2
+                                             className="movie-title"
+                                             onClick={() => {
+                                                  setSelectedMovie(movie);
+                                                  setShowMovieInfoModal(true);
+                                             }}
+                                        >
+                                             {movie.title}
+                                        </h2>
+
+                                        <div className="movie-buttons">
+                                             <button
+                                                  className="movie-btn trailer-btn"
+                                                  onClick={() => {
+                                                       const match = movie.trailer.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/);
+                                                       if (match) {
+                                                            setSelectedTrailer(match[1]);
+                                                            setShowTrailerModal(true);
+                                                       }
+                                                  }}
+                                             >
+                                                  <span className="btn-icon">▶</span>
+                                                  Trailer
+                                             </button>
+
+                                             <button
+                                                  className="movie-btn book-btn"
+                                                  onClick={() => { setSearchText(""); MoviegoToBooking(movie) }}
+                                             >
+                                                  <span className="btn-icon">🎫</span>
+                                                  Đặt vé
+                                             </button>
+                                        </div>
+                                   </div>
                               </div>
-
-
                          </Col>
                     ))}
                </Row>

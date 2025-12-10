@@ -144,34 +144,33 @@ function Statistic() {
      // }
      return (
           <div>
-               {!detailForm && (
-                    <>
-                         <div className="flex justify-between items-center mb-4">
-                              <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                   <input type="date" style={{
-                                        height: '40px',
-                                        padding: '0 12px',
-                                        borderRadius: '4px',
-                                        border: '1px solid black',
-                                        fontSize: '14px',
-                                        boxSizing: 'border-box',
-                                        minWidth: '250px'
-                                   }}
-                                        onChange={(e) => setDate({ ...date, start: e.target.value })}
-                                   />
-                                   <input type="date" style={{
-                                        height: '40px',
-                                        padding: '0 12px',
-                                        borderRadius: '4px',
-                                        border: '1px solid black',
-                                        fontSize: '14px',
-                                        boxSizing: 'border-box',
-                                        minWidth: '250px'
-                                   }}
-                                        onChange={(e) => setDate({ ...date, end: e.target.value })}
-                                   />
+               <>
+                    <div className="flex justify-between items-center mb-4">
+                         <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                              <input type="date" style={{
+                                   height: '40px',
+                                   padding: '0 12px',
+                                   borderRadius: '4px',
+                                   border: '1px solid black',
+                                   fontSize: '14px',
+                                   boxSizing: 'border-box',
+                                   minWidth: '250px'
+                              }}
+                                   onChange={(e) => setDate({ ...date, start: e.target.value })}
+                              />
+                              <input type="date" style={{
+                                   height: '40px',
+                                   padding: '0 12px',
+                                   borderRadius: '4px',
+                                   border: '1px solid black',
+                                   fontSize: '14px',
+                                   boxSizing: 'border-box',
+                                   minWidth: '250px'
+                              }}
+                                   onChange={(e) => setDate({ ...date, end: e.target.value })}
+                              />
 
-                                   {/* <button
+                              {/* <button
                                         type="submit"
                                         style={{
                                              height: '40px',
@@ -187,33 +186,32 @@ function Statistic() {
                                    >
                                         Search
                                    </button> */}
-                              </form>
+                         </form>
 
-                              <h2>Total Revenue: {date.end && date.start ? (
-                                   data.filter((e) => {
-                                        const day = moment(e.schedule.date).format("YYYY-MM-DD");
-                                        const start = date.start && moment(date.start).format("YYYY-MM-DD");
-                                        const end = date.end && moment(date.end).format("YYYY-MM-DD");
-                                        return end.localeCompare(day) >= 0 && day.localeCompare(start) >= 0 && e.bill.status;
-                                   }).reduce((acc, curr) => acc + curr.bill.totalCost, 0)
-                              ) : data.filter((e) => e.bill?.status).reduce((acc, cur) => acc + cur.bill?.totalCost, 0)} VND</h2>
-
-                         </div>
-                         <br />
-                         <Table
-                              columns={columns}
-                              dataSource={date.end && date.start ? data.filter((e) => {
+                         <h2>Total Revenue: {date.end && date.start ? (
+                              data.filter((e) => {
                                    const day = moment(e.schedule.date).format("YYYY-MM-DD");
                                    const start = date.start && moment(date.start).format("YYYY-MM-DD");
                                    const end = date.end && moment(date.end).format("YYYY-MM-DD");
-                                   return end.localeCompare(day) >= 0 && day.localeCompare(start) >= 0;
-                              }) : data}
-                              rowKey={(record) => record._id}
-                         >
+                                   return end.localeCompare(day) >= 0 && day.localeCompare(start) >= 0 && e.bill.status;
+                              }).reduce((acc, curr) => acc + curr.bill.totalCost, 0)
+                         ) : data.filter((e) => e.bill?.status).reduce((acc, cur) => acc + cur.bill?.totalCost, 0)} VND</h2>
 
-                         </Table>
-                    </>
-               )}
+                    </div>
+                    <br />
+                    <Table
+                         columns={columns}
+                         dataSource={date.end && date.start ? data.filter((e) => {
+                              const day = moment(e.schedule.date).format("YYYY-MM-DD");
+                              const start = date.start && moment(date.start).format("YYYY-MM-DD");
+                              const end = date.end && moment(date.end).format("YYYY-MM-DD");
+                              return end.localeCompare(day) >= 0 && day.localeCompare(start) >= 0;
+                         }) : data}
+                         rowKey={(record) => record._id}
+                    >
+
+                    </Table>
+               </>
 
                {/* <div className="flex flex-col card gap-2">
                     {data & data.map((e) => {
