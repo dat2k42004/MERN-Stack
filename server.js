@@ -15,7 +15,10 @@ const serviceRoute = require("./src/routes/servicesRoute");
 const ticketRoute = require("./src/routes/ticketRoute");
 const billRoute = require("./src/routes/billsRoute");
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}));
 
 app.get('/', (req, res) => {
     res.send("Hello World!");

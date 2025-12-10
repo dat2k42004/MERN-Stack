@@ -50,6 +50,7 @@ const Register = async (req, res) => {
 const Login = async (req, res) => {
     try {
         //check if user exists
+        console.log(req.body);
         const user = await User.findOne({
             $or: [
                 { email: req.body.email },
