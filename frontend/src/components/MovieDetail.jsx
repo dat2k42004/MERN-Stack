@@ -25,7 +25,7 @@ function MovieDetail({ showMovieInfoModal, setShowMovieInfoModal, selectedMovie 
                          <div className="grid grid-cols-2 gap-2 text-sm">
                               <div className="font-semibold text-gray-700"><strong>Author:</strong> {selectedMovie.author}</div>
 
-                              <div className="font-semibold text-gray-700"><strong>Release Date:</strong> {moment(selectedMovie).format("DD-MM-YYYY")}</div>
+                              <div className="font-semibold text-gray-700"><strong>Release Date:</strong> {moment(selectedMovie.releaseDate).format("DD-MM-YYYY")}</div>
 
                               <div className="font-semibold text-gray-700"><strong>Genre:</strong> {selectedMovie.genre}</div>
 

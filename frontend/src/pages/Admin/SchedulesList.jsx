@@ -9,6 +9,7 @@ import { message, Table } from 'antd';
 import { GetAllSchedules } from '../../apicalls/schedules';
 import ScheduleForm from './ScheduleForm';
 import moment from 'moment';
+import '../../assets/css/AdminList.css';
 
 function SchedulesList() {
      const [movies, setMovies] = useState([]);
@@ -121,7 +122,11 @@ function SchedulesList() {
                title: "Active",
                dataIndex: "active",
                render: (text, record) => {
-                    return record.active ? "Action" : "Stop";
+                    return (
+                         <span className={`status-badge ${record.active ? 'active' : 'inactive'}`}>
+                              {record.active ? "Active" : "Inactive"}
+                         </span>
+                    );
                }
           },
           {
@@ -129,14 +134,14 @@ function SchedulesList() {
                dataIndex: "action",
                render: (text, record) => {
                     return (
-                         <div className="flex gap-1">
-                              <i class="ri-edit-line" style={{ color: "blue" }}
+                         <div className="admin-action-icons">
+                              <i className="ri-edit-line"
                                    onClick={() => {
                                         setSelectedSchedule(record);
                                         setFormType("edit");
                                         setShowScheduleFormModal(true);
                                    }}></i>
-                              <i class="ri-delete-bin-line" style={{ color: "red" }}
+                              <i className="ri-delete-bin-line"
                                    onClick={() => {
                                         setSelectedSchedule(record);
                                         setFormType("delete");
@@ -166,89 +171,59 @@ function SchedulesList() {
      // }
 
      return (
-          <div>
-               <div className="flex justify-between items-center mb-4">
-                    <form style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                         <select value={keyMovie} onChange={(e) => setKeyMovie(e.target.value)} style={{
-                              height: '40px',
-                              padding: '0 12px',
-                              borderRadius: '4px',
-                              border: '1px solid black',
-                              fontSize: '14px',
-                              boxSizing: 'border-box',
-                              minWidth: '250px'
-                         }}>
-                              <option value="">Select Movie</option>
-                              {movies && movies.map((e) => (
-                                   <option value={e._id}>{e.title}</option>
-                              ))}
-                         </select>
-                         <select value={keyCinema} onChange={(e) => setKeyCinema(e.target.value)} style={{
-                              height: '40px',
-                              padding: '0 12px',
-                              borderRadius: '4px',
-                              border: '1px solid black',
-                              fontSize: '14px',
-                              boxSizing: 'border-box',
-                              minWidth: '250px'
-                         }}>
-                              <option value="">Select Cinema</option>
-                              {cinemas && cinemas.map((e) => (
-                                   <option value={e._id}>{e.name}</option>
-                              ))}
-                         </select>
-                         <select value={keyRoom} onChange={(e) => setKeyRoom(e.target.value)} style={{
-                              height: '40px',
-                              padding: '0 12px',
-                              borderRadius: '4px',
-                              border: '1px solid black',
-                              fontSize: '14px',
-                              boxSizing: 'border-box',
-                              minWidth: '250px'
-                         }}>
-                              <option value="">Select Room</option>
-                              {keyCinema && rooms.filter((e) => e.cinema_id === keyCinema).map((e) => (
-                                   <option value={e._id}>{e.name}</option>
-                              ))}
-                         </select>
-                         <input type="date" value={keyDate} onChange={(e) => setKeyDate(e.target.value)} style={{
-                              height: '40px',
-                              padding: '0 12px',
-                              borderRadius: '4px',
-                              border: '1px solid black',
-                              fontSize: '14px',
-                              boxSizing: 'border-box',
-                              minWidth: '250px'
-                         }} />
-                         {/* <button
-                              type="submit"
-                              style={{
-                                   height: '40px',
-                                   padding: '0 16px',
-                                   backgroundColor: 'white',
-                                   color: 'black',
-                                   border: '1px solid black',
-                                   borderRadius: '4px',
-                                   cursor: 'pointer',
-                                   fontSize: '14px',
-                                   boxSizing: 'border-box'
-                              }}
+          <div className="admin-list-container">
+               <div className="admin-list-header">
+                    <div className="admin-search-container">
+                         <select
+                              value={keyMovie}
+                              onChange={(e) => setKeyMovie(e.target.value)}
+                              className="admin-search-input"
                          >
-                              Search
-                         </button> */}
-                    </form>
+                              <option value="">🎬 Chọn Phim</option>
+                              {movies && movies.map((e) => (
+                                   <option key={e._id} value={e._id}>{e.title}</option>
+                              ))}
+                         </select>
+                         <select
+                              value={keyCinema}
+                              onChange={(e) => setKeyCinema(e.target.value)}
+                              className="admin-search-input"
+                         >
+                              <option value="">🏪 Chọn Rạp</option>
+                              {cinemas && cinemas.map((e) => (
+                                   <option key={e._id} value={e._id}>{e.name}</option>
+                              ))}
+                         </select>
+                         <select
+                              value={keyRoom}
+                              onChange={(e) => setKeyRoom(e.target.value)}
+                              className="admin-search-input"
+                         >
+                              <option value="">📺 Chọn Phòng</option>
+                              {keyCinema && rooms.filter((e) => e.cinema_id === keyCinema).map((e) => (
+                                   <option key={e._id} value={e._id}>{e.name}</option>
+                              ))}
+                         </select>
+                         <input
+                              type="date"
+                              value={keyDate}
+                              onChange={(e) => setKeyDate(e.target.value)}
+                              className="admin-search-input"
+                         />
+                    </div>
 
-
-                    <Button
-                         title="Add Schedule"
-                         variant="outlined"
+                    <button
+                         className="admin-add-button"
                          onClick={() => {
                               setShowScheduleFormModal(true)
                               setFormType("add");
                          }}
-                    />
+                    >
+                         <i className="ri-add-line"></i>
+                         Thêm Lịch Chiếu
+                    </button>
                </div>
-               <br />
+
                <Table
                     columns={columns}
                     dataSource={schedules.filter((e) => {
@@ -260,6 +235,7 @@ function SchedulesList() {
                          return matchMovie && matchCinema && matchRoom && matchDate;
                     })}
                     rowKey="_id"
+                    pagination={{ pageSize: 10 }}
                />
 
                {showScheduleFormModal && <ScheduleForm

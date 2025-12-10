@@ -1,10 +1,10 @@
 const Movie = require("../models/movieModel");
 const Schedule = require("../models/scheduleModel");
 
-const AddMovie = async(req, res) => {
+const AddMovie = async (req, res) => {
      try {
           const newMovie = new Movie(req.body);
-          if (await Movie.findOne({title: newMovie.title, author: newMovie.author, releaseDate: newMovie.releaseDate, duration: newMovie.duration, genre: newMovie.genre})) {
+          if (await Movie.findOne({ title: newMovie.title, author: newMovie.author, releaseDate: newMovie.releaseDate, duration: newMovie.duration, genre: newMovie.genre })) {
                res.send({
                     success: false,
                     message: "This movie has already existed!",
@@ -27,7 +27,8 @@ const AddMovie = async(req, res) => {
 
 const GetAllMovie = async (req, res) => {
      try {
-          const movies = await Movie.find().sort({createAt: -1});
+          const movies = await Movie.find().sort({ releaseDate: -1 });
+          // console.log(movies);
           res.send({
                success: true,
                message: "Movies fetched successfully!",
@@ -59,7 +60,7 @@ const UpdateMovie = async (req, res) => {
 
 const DeleteMovie = async (req, res) => {
      try {
-          const schedule = await Schedule.findOne({movie_id: req.body._id});
+          const schedule = await Schedule.findOne({ movie_id: req.body._id });
           if (schedule) {
                res.send({
                     success: false,
@@ -79,6 +80,8 @@ const DeleteMovie = async (req, res) => {
           })
      }
 }
+
+
 
 module.exports = {
      AddMovie,

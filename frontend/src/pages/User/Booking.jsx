@@ -10,6 +10,7 @@ import { GetAllRooms } from '../../apicalls/rooms';
 import moment from 'moment';
 import Button from "../../components/Button";
 import ChoseSeat from './ChoseSeat';
+import '../../assets/css/Booking.css';
 
 function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
      const [allSchedules, setAllSchedules] = useState([]);
@@ -124,19 +125,18 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
      };
 
      return (
-          <div >
+          <div className="booking-page">
                {!showChoseSeat && (
-                    <Row gutter={[20, 20]} className="mt-2">
+                    <Row gutter={[24, 24]} className="mt-2 booking-grid">
                          <Col span={8}>
                               {/* Movie Box */}
-                              <div className="p-2 card flex flex-col gap-1" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }}>
-                                   <h2 className="text-xl">Movie</h2>
+                              <div className="booking-section">
+                                   <h2 className="section-title">🎬 Chọn phim</h2>
                                    <input
                                         type="text"
-                                        className="search-input"
-                                        placeholder="Search for movie"
+                                        className="booking-search-input"
+                                        placeholder="🔍 Tìm kiếm phim..."
                                         value={search.movie}
-                                        style={{ maxWidth: "560px", marginLeft: "0" }}
                                         onChange={(e) => setSearch({ ...search, movie: e.target.value })}
                                    />
                                    {movies &&
@@ -147,70 +147,34 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                              .map((movie) => (
                                                   <div
                                                        key={movie._id}
-                                                       className={`p-2 cursor-pointer flex items-center gap-4 ${selectedMovie?._id === movie._id ? 'bg-blue-100' : 'bg-white'}`}
-                                                       style={{
-                                                            borderRadius: "8px",
-                                                            boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
-                                                            width: "90%",
-                                                            minHeight: "120px",
-                                                            marginBottom: "10px",
-                                                       }}
+                                                       className={`item-card ${selectedMovie?._id === movie._id ? 'selected' : ''}`}
                                                   >
-                                                       <div
-                                                            className="p-2 card flex flex-row gap-1"
-                                                            style={{
-                                                                 // borderRadius: "4px",
-                                                                 // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                                                                 border: "none",
-                                                                 width: "80%"
-                                                            }}
-                                                       >
+                                                       <div className="item-content">
                                                             <img
                                                                  src={movie.poster}
-                                                                 alt="Movie"
-                                                                 width="80"
-                                                                 height="120"
-                                                                 style={{ borderRadius: "4px", padding: "10px" }}
+                                                                 alt={movie.title}
+                                                                 className="item-image"
                                                             />
-                                                            <div className="flex flex-col">
-                                                                 <h3 className="text-lg font-semibold">{movie.title}</h3>
+                                                            <div className="item-info">
+                                                                 <h3 className="item-title">{movie.title}</h3>
                                                             </div>
                                                        </div>
-                                                       <div className="flex flex-col justify-end">
-                                                            {/* <Button title="Chose" variant="outlined"  style={{ flex: 1 }} /> */}
+                                                       <div className="item-actions">
                                                             <button
-                                                                 // disabled={selectedSeats.length === 0}
-                                                                 style={{
-                                                                      padding: "6px 12px",
-                                                                      backgroundColor: "#28a745",
-                                                                      color: "white",
-                                                                      border: "none",
-                                                                      borderRadius: "6px",
-                                                                      cursor: "pointer",
-                                                                      fontWeight: "bold",
-                                                                      fontSize: "14px",
-                                                                      transition: "0.3s",
-                                                                 }}
+                                                                 className="action-btn choose-btn"
                                                                  onClick={() => handleMovieSelect(movie)}
-                                                            >Chose</button>
-                                                            <br />
+                                                            >
+                                                                 <span className="btn-icon">✓</span>
+                                                                 Chọn
+                                                            </button>
                                                             <button
-                                                                 className="hover"
+                                                                 className="action-btn cancel-btn"
                                                                  disabled={!selectedMovie}
-                                                                 style={{
-                                                                      padding: "6px 12px",
-                                                                      backgroundColor: "red",
-                                                                      color: "white",
-                                                                      border: "none",
-                                                                      borderRadius: "6px",
-                                                                      cursor: "pointer",
-                                                                      fontWeight: "bold",
-                                                                      fontSize: "14px",
-                                                                      transition: "0.3s",
-                                                                 }}
                                                                  onClick={() => { setSelectedMovie(null); setSearch({ ...search, movie: "" }); filterSchedules(null, selectedCinema, search.date); }}
-                                                            >Cancel</button>
-                                                            {/* <Button title="Cancel" variant="outlined" onClick={() => { setSelectedMovie(null); setSearch({ ...search, movie: "" }); filterSchedules(null, selectedCinema, search.date); }} style={{ flex: 1 }} /> */}
+                                                            >
+                                                                 <span className="btn-icon">✕</span>
+                                                                 Hủy
+                                                            </button>
                                                        </div>
                                                   </div>
                                              ))}
@@ -218,14 +182,13 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                          </Col>
                          <Col span={8}>
                               {/* Cinema Box */}
-                              <div className="p-2 card flex flex-col gap-1" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }}>
-                                   <h2 className="text-xl">Cinema</h2>
+                              <div className="booking-section">
+                                   <h2 className="section-title">🎭 Chọn rạp</h2>
                                    <input
                                         type="text"
-                                        className="search-input"
-                                        placeholder="Search for cinema"
+                                        className="booking-search-input"
+                                        placeholder="🔍 Tìm kiếm rạp..."
                                         value={search.cinema}
-                                        style={{ maxWidth: "560px", marginLeft: "0" }}
                                         onChange={(e) => setSearch({ ...search, cinema: e.target.value })}
                                    />
                                    {cinemas &&
@@ -236,72 +199,34 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                              .map((cinema) => (
                                                   <div
                                                        key={cinema._id}
-                                                       className={`p-2 cursor-pointer flex items-center gap-4 ${selectedCinema?._id === cinema._id ? 'bg-blue-100' : 'bg-white'}`}
-                                                       style={{
-                                                            borderRadius: "8px",
-                                                            boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
-                                                            width: "90%",
-                                                            minHeight: "120px",
-                                                            marginBottom: "10px",
-                                                       }}
+                                                       className={`item-card ${selectedCinema?._id === cinema._id ? 'selected' : ''}`}
                                                   >
-
-                                                       <div
-                                                            className="p-2 card flex flex-row gap-1"
-                                                            style={{
-                                                                 // borderRadius: "4px",
-                                                                 // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                                                                 border: "none",
-                                                                 width: "80%"
-                                                            }}
-                                                       >
+                                                       <div className="item-content">
                                                             <img
                                                                  src={Icon.find((e) => e.title === cinema.founder)?.image}
-                                                                 alt="Cinema"
-                                                                 width="80"
-                                                                 height="120"
-                                                                 style={{ borderRadius: "4px", padding: "10px" }}
+                                                                 alt={cinema.name}
+                                                                 className="item-image"
                                                             />
-                                                            <div className="flex flex-col">
-                                                                 <h3 className="text-lg font-semibold">{cinema.name}</h3>
+                                                            <div className="item-info">
+                                                                 <h3 className="item-title">{cinema.name}</h3>
                                                             </div>
                                                        </div>
-                                                       <div className="flex flex-col justify-end">
+                                                       <div className="item-actions">
                                                             <button
-                                                                 // disabled={selectedSeats.length === 0}
-                                                                 style={{
-                                                                      padding: "6px 12px",
-                                                                      backgroundColor: "#28a745",
-                                                                      color: "white",
-                                                                      border: "none",
-                                                                      borderRadius: "6px",
-                                                                      cursor: "pointer",
-                                                                      fontWeight: "bold",
-                                                                      fontSize: "14px",
-                                                                      transition: "0.3s",
-                                                                 }}
+                                                                 className="action-btn choose-btn"
                                                                  onClick={() => handleCinemaSelect(cinema)}
-                                                            >Chose</button>
-                                                            <br />
+                                                            >
+                                                                 <span className="btn-icon">✓</span>
+                                                                 Chọn
+                                                            </button>
                                                             <button
-                                                                 className="hover"
+                                                                 className="action-btn cancel-btn"
                                                                  disabled={!selectedCinema}
-                                                                 style={{
-                                                                      padding: "6px 12px",
-                                                                      backgroundColor: "red",
-                                                                      color: "white",
-                                                                      border: "none",
-                                                                      borderRadius: "6px",
-                                                                      cursor: "pointer",
-                                                                      fontWeight: "bold",
-                                                                      fontSize: "14px",
-                                                                      transition: "0.3s",
-                                                                 }}
                                                                  onClick={() => { setSelectedCinema(null); setSearch({ ...search, cinema: "" }); filterSchedules(selectedMovie, null, search.date); }}
-                                                            >Cancel</button>
-                                                            {/* <Button title="Chose" variant="outlined" onClick={() => handleCinemaSelect(cinema)} style={{ flex: 1 }} />
-                                                                 <br />
-                                                            <Button title="Cancel" variant="outlined" onClick={() => { setSelectedCinema(null); setSearch({ ...search, cinema: "" }); filterSchedules(selectedMovie, null, search.date); }} style={{ flex: 1 }} /> */}
+                                                            >
+                                                                 <span className="btn-icon">✕</span>
+                                                                 Hủy
+                                                            </button>
                                                        </div>
                                                   </div>
                                              ))}
@@ -309,13 +234,12 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                          </Col>
                          <Col span={8}>
                               {/* Schedule Box */}
-                              <div className="p-2 card flex flex-col gap-1" style={{ borderRadius: "4px", boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)" }}>
-                                   <h2 className="text-xl">Schedule</h2>
+                              <div className="booking-section">
+                                   <h2 className="section-title">📅 Chọn lịch chiếu</h2>
                                    <input
                                         type="date"
-                                        className="search-input"
+                                        className="booking-search-input"
                                         value={search.date}
-                                        style={{ maxWidth: "560px", marginLeft: "0" }}
                                         onChange={handleDateChange}
                                    />
                                    {filteredSchedules.map((schedule) => {
@@ -323,66 +247,53 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                         return (
                                              <div
                                                   key={schedule._id}
-                                                  className="flex gap-1 p-2 items-center"
-                                                  style={{
-                                                       borderRadius: "8px",
-                                                       boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
-                                                       width: "90%",
-                                                       minHeight: "80px",
-                                                       marginBottom: "10px",
-                                                  }}
+                                                  className="schedule-card"
                                              >
                                                   {room && room.map((e) => (
-                                                       <div
-                                                            className="p-2 card flex flex-col gap-1"
-                                                            style={{
-                                                                 // borderRadius: "4px",
-                                                                 // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-                                                                 border: "none",
-                                                                 width: "80%"
-                                                            }}
-                                                       >
-                                                            <div>{e.name} ({e.type})</div>
-                                                            <div>Movie: {movies.find(m => m._id === schedule.movie_id)?.title}</div>
-                                                            <div>Cinema: {cinemas.find(c => c._id === schedule.cinema_id)?.name}</div>
-                                                            <div>Start Time: {moment(schedule.startTime, "HH:mm").format("HH:mm")}</div>
-                                                            <div>Date: {moment(schedule.date).format("YYYY-MM-DD")}</div>
+                                                       <div className="schedule-content" key={e._id}>
+                                                            <div className="schedule-info">
+                                                                 <div className="schedule-detail">
+                                                                      <span className="detail-label">🎬 Phòng:</span>
+                                                                      <span className="detail-value">{e.name} ({e.type})</span>
+                                                                 </div>
+                                                                 <div className="schedule-detail">
+                                                                      <span className="detail-label">🎥 Phim:</span>
+                                                                      <span className="detail-value">{movies.find(m => m._id === schedule.movie_id)?.title}</span>
+                                                                 </div>
+                                                                 <div className="schedule-detail">
+                                                                      <span className="detail-label">🏢 Rạp:</span>
+                                                                      <span className="detail-value">{cinemas.find(c => c._id === schedule.cinema_id)?.name}</span>
+                                                                 </div>
+                                                                 <div className="schedule-detail">
+                                                                      <span className="detail-label">⏰ Giờ:</span>
+                                                                      <span className="detail-value">{moment(schedule.startTime, "HH:mm").format("HH:mm")}</span>
+                                                                 </div>
+                                                                 <div className="schedule-detail">
+                                                                      <span className="detail-label">📅 Ngày:</span>
+                                                                      <span className="detail-value">{moment(schedule.date).format("DD/MM/YYYY")}</span>
+                                                                 </div>
+                                                            </div>
                                                        </div>
                                                   ))}
-                                                  {/* <Button
-                                                       title="Book"
-                                                       variant="outlined"
-                                                       onClick={() => {
-                                                            setSelectedSchedule(schedule);
-                                                            setShowChoseSeat(true);
-                                                            console.log("Selected Schedule:", schedule);
-                                                       }}
-                                                       style={{ flexShrink: 0 }}
-                                                  /> */}
                                                   <button
-                                                       // disabled={selectedSeats.length === 0}
-                                                       style={{
-                                                            padding: "6px 12px",
-                                                            backgroundColor: "#28a745",
-                                                            color: "white",
-                                                            border: "none",
-                                                            borderRadius: "6px",
-                                                            cursor: "pointer",
-                                                            fontWeight: "bold",
-                                                            fontSize: "14px",
-                                                            transition: "0.3s",
-                                                       }}
+                                                       className="action-btn book-btn"
                                                        onClick={() => {
                                                             setSelectedSchedule(schedule);
                                                             setShowChoseSeat(true);
                                                             console.log("Selected Schedule:", schedule);
                                                        }}
-                                                  >Book</button>
+                                                  >
+                                                       <span className="btn-icon">🎫</span>
+                                                       Đặt vé
+                                                  </button>
                                              </div>
                                         );
                                    })}
                                    {filteredSchedules.length === 0 && (
-                                        <div className="text-center p-2">No schedules available based on your selection.</div>
+                                        <div className="no-data-message">
+                                             <span className="no-data-icon">📭</span>
+                                             <p>Không có lịch chiếu phù hợp</p>
+                                        </div>
                                    )}
                               </div>
                          </Col>

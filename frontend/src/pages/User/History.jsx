@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { message, Row, Col } from 'antd';
 import { useLocation } from "react-router-dom";
+import '../../assets/css/History.css';
 
 function History({ user }) {
   const dispatch = useDispatch();
@@ -65,114 +66,136 @@ function History({ user }) {
 
 
   return (
-    <div>
-      {/* {user._id} */}
-      {data && data.map((d) => (
-        <div
-          style={{
-            borderRadius: "4px",
-            boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)"
-          }}>
-          <Row
-            gutter={[16, 16]}
-            className="mt-2"
-          >
-            <Col span={6}>
-              <div
-                className="p-2 card flex flex-col gap-1"
-                style={{
-                  // borderRadius: "4px",
-                  // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)"
-                  border: "none"
-                }}>
-                <strong>Movie: {d.movie.title}</strong>
-                <strong>Cinema: {d.cinema.name}</strong>
-                <strong>Room: {d.room.name} ({d.room.type})</strong>
-              </div>
-            </Col>
-            <Col span={6}>
-              <div
-                className="p-2 card flex flex-col gap-1"
-                style={{
-                  // borderRadius: "4px",
-                  // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)"
-                  border: "none"
-                }}>
-                <strong>Seat: {d.ticket.map((e) => `[${e.seat}]`)}</strong>
-                <strong>Date: {moment(d.schedule.date).format("DD-MM-YYYY")}</strong>
-                <strong>Start Time: {d.schedule.startTime}</strong>
-              </div>
-            </Col>
-            <Col span={6}>
-              <div
-                className="p-2 card flex flex-col gap-1"
-                style={{
-                  // borderRadius: "4px",
-                  // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)"
-                  border: "none"
-                }}>
-                <strong>Service: {d.service.length > 0 ? d.service.map((e) => `${e.service.type} (${e.quantity}) `) : "No"}</strong>
-                <strong>Promotion: {d.promotion ? `Discound ${d.promotion.rate}%` : "No"}</strong>
-                <strong>Total Cost: {d.bill.totalCost}VND</strong>
-              </div>
-            </Col>
-            <Col span={6}>
-              <div
-                className="p-2 card flex flex-col gap-1"
-                style={{
-                  // borderRadius: "4px",
-                  // boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)"
-                  border: "none"
-                }}>
-                {!d.bill.status ? (<>
-                  <button
-                    // disabled={selectedSeats.length === 0}
-                    style={{
-                      padding: "6px 12px",
-                      backgroundColor: "#28a745",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                      fontWeight: "bold",
-                      fontSize: "14px",
-                      transition: "0.3s",
-                    }}
-                    onClick={() => {
-                      console.log(d.bill);
-                      handlePayment(d.bill);
-                    }}
-                  >Payment</button>
-                  <button
-                    // disabled={selectedSeats.length === 0}
-                    style={{
-                      padding: "6px 12px",
-                      backgroundColor: "red",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                      fontWeight: "bold",
-                      fontSize: "14px",
-                      transition: "0.3s",
-                    }}
-                    onClick={() => {
-                      const payload = {
-                        bill: d.bill,
-                        ticket: d.ticket,
-                        service: d.service,
-                        promotion: d.promotion
-                      }
-                      console.log(payload);
-                      handleCancel(payload);
-                    }}
-                  >Cancel</button>
-                </>) : (<strong><h2><i className="ri-check-double-line" style={{ color: "green" }}></i></h2></strong>)}
-              </div>
-            </Col>
-          </Row>
+    <div className="history-page">
+      <div className="history-header">
+        <h1 className="page-title">📋 Lịch sử đặt vé</h1>
+      </div>
+
+      {data && data.length > 0 ? (
+        <div className="history-list">
+          {data.map((d, index) => (
+            <div key={d.bill._id} className="history-card" style={{ animationDelay: `${index * 0.1}s` }}>
+              <Row gutter={[20, 20]}>
+                <Col span={6}>
+                  <div className="info-section">
+                    <h3 className="info-title">🎬 Thông tin phim</h3>
+                    <div className="info-content">
+                      <div className="info-item">
+                        <span className="info-label">Phim:</span>
+                        <span className="info-value">{d.movie.title}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Rạp:</span>
+                        <span className="info-value">{d.cinema.name}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Phòng:</span>
+                        <span className="info-value">{d.room.name} ({d.room.type})</span>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+
+                <Col span={6}>
+                  <div className="info-section">
+                    <h3 className="info-title">📅 Lịch chiếu</h3>
+                    <div className="info-content">
+                      <div className="info-item">
+                        <span className="info-label">Ghế:</span>
+                        <span className="info-value seats">{d.ticket.map((e) => `${e.seat}`).join(', ')}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Ngày:</span>
+                        <span className="info-value">{moment(d.schedule.date).format("DD/MM/YYYY")}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Giờ:</span>
+                        <span className="info-value">{d.schedule.startTime}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+
+                <Col span={6}>
+                  <div className="info-section">
+                    <h3 className="info-title">💰 Chi tiết</h3>
+                    <div className="info-content">
+                      <div className="info-item">
+                        <span className="info-label">Dịch vụ:</span>
+                        <span className="info-value">
+                          {d.service.length > 0
+                            ? d.service.map((e) => `${e.service.type} (×${e.quantity})`).join(', ')
+                            : "Không"}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Khuyến mãi:</span>
+                        <span className="info-value">
+                          {d.promotion ? `Giảm ${d.promotion.rate}%` : "Không"}
+                        </span>
+                      </div>
+                      <div className="info-item total-cost">
+                        <span className="info-label">Tổng tiền:</span>
+                        <span className="info-value">{d.bill.totalCost.toLocaleString()} VND</span>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+
+                <Col span={6}>
+                  <div className="info-section action-section">
+                    <h3 className="info-title">⚡ Trạng thái</h3>
+                    <div className="action-content">
+                      {!d.bill.status ? (
+                        <>
+                          <div className="status-badge pending">Chờ thanh toán</div>
+                          <button
+                            className="action-btn payment-btn"
+                            onClick={() => {
+                              console.log(d.bill);
+                              handlePayment(d.bill);
+                            }}
+                          >
+                            <span className="btn-icon">💳</span>
+                            Thanh toán
+                          </button>
+                          <button
+                            className="action-btn cancel-btn"
+                            onClick={() => {
+                              const payload = {
+                                bill: d.bill,
+                                ticket: d.ticket,
+                                service: d.service,
+                                promotion: d.promotion
+                              }
+                              console.log(payload);
+                              handleCancel(payload);
+                            }}
+                          >
+                            <span className="btn-icon">✕</span>
+                            Hủy vé
+                          </button>
+                        </>
+                      ) : (
+                        <div className="paid-status">
+                          <i className="ri-check-double-line success-icon"></i>
+                          <div className="status-badge success">Đã thanh toán</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          ))}
         </div>
-      ))}
+      ) : (
+        <div className="no-history">
+          <div className="no-history-icon">🎫</div>
+          <h2>Chưa có lịch sử đặt vé</h2>
+          <p>Hãy đặt vé xem phim đầu tiên của bạn!</p>
+        </div>
+      )}
     </div>
   )
 }
