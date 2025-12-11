@@ -16,7 +16,7 @@ const ticketRoute = require("./src/routes/ticketRoute");
 const billRoute = require("./src/routes/billsRoute");
 app.use(express.json());
 app.use(cors({
-    origin: "*",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
@@ -34,7 +34,7 @@ app.use("/api/services", serviceRoute);
 app.use("/api/tickets", ticketRoute);
 app.use("/api/bills", billRoute);
 app.listen(POST, () => {
-    console.log(`Server is running in http://localhost:${POST}`);
+    console.log(`Server is running in ${process.env.FRONTEND_URL}:${POST}`);
 });
 
 
