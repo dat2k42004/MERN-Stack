@@ -1,9 +1,8 @@
 import axios from "axios";
-
-export const axiosInstance = axios.create( {
-     baseURL: "http://localhost:8080",
+export const axiosInstance = axios.create({
+     baseURL: import.meta.env.VITE_BACKEND_URL,
      headers: {
           "Content-Type": "application/json",
-          Authorization : `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
      }
 })

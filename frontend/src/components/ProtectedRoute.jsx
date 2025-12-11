@@ -67,13 +67,7 @@ function ProtectedRoute({ children }) {
                navigate("/notfound");
                return null;
           }
-     } else {
-          const path = location.pathname;
-          if (path.startsWith("/admin") || path === "/profile") {
-               navigate("/notfound");
-               return null;
-          }
-     }
+     } 
      const headerStyle = {
           background: 'linear-gradient(135deg, #006666 0%, #009999 100%)',
           padding: '15px 30px',
