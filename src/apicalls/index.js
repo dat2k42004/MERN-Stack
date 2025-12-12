@@ -1,4 +1,5 @@
 import axios from "axios";
+console.log(import.meta.env.VITE_BACKEND_URL);
 export const axiosInstance = axios.create({
      baseURL: import.meta.env.VITE_BACKEND_URL,
      headers: {
@@ -6,3 +7,4 @@ export const axiosInstance = axios.create({
           Authorization: `Bearer ${localStorage.getItem("token")}`,
      }
 })
+
