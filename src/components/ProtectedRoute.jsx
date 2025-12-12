@@ -58,16 +58,12 @@ function ProtectedRoute({ children }) {
      // ✅ Quy tắc chặn quyền (giữ nguyên)
      if (user) {
           const path = location.pathname;
-          if (user.isAdmin && path.startsWith("/user")) {
-               navigate("/notfound");
-               return null;
-          }
           if (!user.isAdmin && path.startsWith("/admin")) {
                message.error("You do not have permission to access this page!");
                navigate("/notfound");
                return null;
           }
-     } 
+     }
      const headerStyle = {
           background: 'linear-gradient(135deg, #006666 0%, #009999 100%)',
           padding: '15px 30px',
@@ -208,7 +204,7 @@ function ProtectedRoute({ children }) {
 
                          <h2
                               style={navItemStyle}
-                              onClick={() => user?.isAdmin ? navigate("/admin") : navigate("/user")}
+                              onClick={() => navigate("/user")}
                               onMouseEnter={(e) => {
                                    e.target.style.transform = 'translateY(-2px)';
                                    e.target.style.background = 'rgba(255, 255, 255, 0.2)';
@@ -222,6 +218,25 @@ function ProtectedRoute({ children }) {
                          >
                               🎭 Features
                          </h2>
+
+                         {user && user?.isAdmin && (
+                              <h2
+                                   style={navItemStyle}
+                                   onClick={() => navigate("/admin")}
+                                   onMouseEnter={(e) => {
+                                        e.target.style.transform = 'translateY(-2px)';
+                                        e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                                        e.target.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.3)';
+                                   }}
+                                   onMouseLeave={(e) => {
+                                        e.target.style.transform = 'translateY(0)';
+                                        e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                                        e.target.style.boxShadow = 'none';
+                                   }}
+                              >
+                                   🗃  Manage
+                              </h2>
+                         )}
                     </div>
 
                     {user ? (
