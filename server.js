@@ -34,7 +34,7 @@ app.use("/api/services", serviceRoute);
 app.use("/api/tickets", ticketRoute);
 app.use("/api/bills", billRoute);
 app.listen(POST, () => {
-    console.log(`Server is running in ${process.env.FRONTEND_URL}:${POST}`);
+    console.log(`Server is running in http://localhost:${POST}`);
 });
 
 
