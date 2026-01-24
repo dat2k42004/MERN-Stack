@@ -1,7 +1,6 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const authMiddleware = require("../middlewares/authMiddleware");
 
 
 
@@ -15,13 +14,13 @@ const Register = async (req, res) => {
         const nameExists = await User.findOne({ username: req.body.username });
 
         if (nameExists) {
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: "Username already exists",
             });
         }
         else if (emailExists) {
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: "An email only used for a user",
             })
@@ -35,12 +34,12 @@ const Register = async (req, res) => {
         const newUser = new User(req.body);
         await newUser.save();
 
-        res.send({
+        res.status(201).send({
             success: true,
             message: "User created successfully!",
         })
     } catch (err) {
-        res.send({
+        res.status(500).send({
             success: false,
             message: err.message,
         });
@@ -89,14 +88,14 @@ const Login = async (req, res) => {
             expiresIn: "1d",
         })
 
-        res.send({
+        res.status(200).send({
             success: true,
             message: "User logged in successfully!",
             data: token,
         });
     }
     catch (err) {
-        res.send({
+        res.status(500).send({
             success: false,
             message: err.message,
         });
@@ -106,7 +105,7 @@ const Login = async (req, res) => {
 const GetCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select('-password');
-        res.send({
+        res.status(200).send({
             success: true,
             message: "User deatails fetched successfully!",
             data: user,
@@ -124,12 +123,12 @@ const GetCurrentUser = async (req, res) => {
 const UpdateUser = async (req, res) => {
     try {
         await User.findByIdAndUpdate(req.body._id, req.body);
-        res.send({
+        res.status(200).send({
             success: true,
             message: "User has already updated!",
         });
     } catch (error) {
-        res.send({
+        res.status(500).send({
             success: false,
             message: error.message,
         })
@@ -139,12 +138,12 @@ const UpdateUser = async (req, res) => {
 const DeleteUser = async (req, res) => {
     try {
         await User.findByIdAndDelete(req.body._id);
-        res.send({
+        res.status(200).send({
             success: true,
             message: "User has already deleted!",
         })
     } catch (error) {
-        res.send({
+        res.status(500).send({
             success: false,
             message: error.message
         })
@@ -154,13 +153,13 @@ const DeleteUser = async (req, res) => {
 const GetAllUser = async (req, res) => {
     try {
         const response = await User.find().sort({ createAt: -1 });
-        res.send({
+        res.status(200).send({
             success: true,
             message: "User fetched successfully!",
             data: response,
         })
     } catch (error) {
-        res.send({
+        res.status(500).send({
             success: false,
             message: error.message,
         })
@@ -172,7 +171,7 @@ const ChangePassword = async (req, res) => {
         const user = await User.findById(req.body._id);
 
         if (req.body.old === req.body.new) {
-            res.send({
+            res.status(400).send({
                 message: "New password need different old one!",
                 success: false,
             })
@@ -187,7 +186,7 @@ const ChangePassword = async (req, res) => {
         );
 
         if (!valid) {
-            res.send({
+            res.status(400).send({
                 success: false,
                 message: "Current password is incorrect"
             })
@@ -202,13 +201,13 @@ const ChangePassword = async (req, res) => {
         await User.updateOne({ _id: req.body._id }, { $set: { password: hashedPassword } });
         const response = await User.findById(req.body._id);
 
-        res.send({
+        res.status(200).send({
             success: true,
             message: "Change password successfully",
             data: response,
         })
     } catch (error) {
-        res.send({
+        res.status(500).send({
             success: false,
             message: error.message,
         })

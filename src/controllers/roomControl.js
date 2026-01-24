@@ -7,7 +7,7 @@ const AddRoom = async(req, res) => {
      try {
           const newRoom = new Room(req.body);
           if (await Room.findOne({name: newRoom.name, cinema_id: newRoom.cinema_id})) {
-               res.send({
+               res.status(400).send({
                     success: false,
                     message: "This room has already existed!",
                });
@@ -18,13 +18,13 @@ const AddRoom = async(req, res) => {
                     const newSeat = new Seat({seatNum: i, type: "Single", room_id: newRoom._id});
                     await newSeat.save();
                }
-               res.send({
+               res.status(200).send({
                     success: true,
                     message: "Room added successfully!",
                });
           }
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           });
@@ -36,7 +36,7 @@ const DeleteRoom = async (req, res) => {
           const schedule = await Schedule.findOne({room_id: req.body._id});
           if (schedule) {
                // console.log("schedule", schedule);
-               res.send({
+               res.status(400).send({
                     success: false,
                     message: "Room also has schedule. Can't delete!",
                })
@@ -44,12 +44,12 @@ const DeleteRoom = async (req, res) => {
           }
           await Seat.deleteMany({room_id: req.body._id});
           await Room.findByIdAndDelete(req.body._id);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Room has deleted successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -74,12 +74,12 @@ const UpdateRoom = async (req, res) => {
                     await newSeat.save();
                }
           }
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Room has updated successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -90,13 +90,13 @@ const UpdateRoom = async (req, res) => {
 const GetAllRoom = async (req, res) => {
      try {
           const Rooms = await Room.find().sort({createAt: -1});
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Rooms fetched successfully!",
                data: Rooms,
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })

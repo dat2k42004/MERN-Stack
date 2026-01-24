@@ -7,20 +7,20 @@ const AddCinema = async(req, res) => {
      try {
           const newCinema = new Cinema(req.body);
           if (await Cinema.findOne({name: newCinema.name})) {
-               res.send({
+               res.status(400).send({
                     success: false,
                     message: "This cinema has already existed!",
                });
           }
           else {
                await newCinema.save();
-               res.send({
+               res.status(200).send({
                     success: true,
                     message: "Cinema added successfully!",
                });
           }
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           });
@@ -30,13 +30,13 @@ const AddCinema = async(req, res) => {
 const GetAllCinema = async (req, res) => {
      try {
           const cinemas = await Cinema.find().sort({createAt: -1});
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Cinemas fetched successfully!",
                data: cinemas,
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -46,12 +46,12 @@ const GetAllCinema = async (req, res) => {
 const UpdateCinema = async (req, res) => {
      try {
           await Cinema.findByIdAndUpdate(req.body._id, req.body);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Cinema has updated successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -62,19 +62,19 @@ const DeleteCinema  = async (req, res) => {
      try {
           const room = await Room.findOne({cinema_id: req.body._id});
           if (room) {
-               res.send({
+               res.status(400).send({
                     success: false,
                     message: "Cinema also has room. Can't delete!",
                })
                return 0;
           }
           await Cinema.findByIdAndDelete(req.body._id);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Cinema has deleted successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
