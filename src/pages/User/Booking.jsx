@@ -151,7 +151,7 @@ function Booking({ isActive, movieData, cinemaData, user, BookingToHistory }) {
                                                   >
                                                        <div className="item-content">
                                                             <img
-                                                                 src={movie.poster}
+                                                                 src={`${import.meta.env.VITE_BACKEND_URL}${movie.poster}`}
                                                                  alt={movie.title}
                                                                  className="item-image"
                                                             />

@@ -3,7 +3,11 @@ import { axiosInstance } from "."
 
 export const AddMovie = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/movies/add-movie", payload);
+          const response = await axiosInstance.post("/api/movies/add-movie", payload, {
+               headers: {
+                    'Content-Type': 'multipart/form-data'
+               }
+          });
           return response.data;
      }
      catch (error) {

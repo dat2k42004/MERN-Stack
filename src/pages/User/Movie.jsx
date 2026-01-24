@@ -67,7 +67,7 @@ function Movie({ MoviegoToBooking }) {
                               <div className="movie-card">
                                    <div className="movie-poster-wrapper">
                                         <img
-                                             src={movie.poster}
+                                             src={`${import.meta.env.VITE_BACKEND_URL}${movie.poster}`}
                                              alt={movie.title}
                                              className="movie-poster"
                                              onClick={() => {
