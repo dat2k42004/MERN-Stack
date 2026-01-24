@@ -1,0 +1,77 @@
+# Docker Compose cho Production
+version: '3.8'
+
+services:
+  backend:
+    image: ghcr.io/${GITHUB_REPOSITORY}/backend:latest
+    container_name: movie_booking_backend
+    ports:
+      - "8080:8080"
+    networks:
+      - app_network
+    environment:
+      MONGO_URL: ${MONGO_URL}
+      PORT: 8080
+      JWT_SECRET: ${JWT_SECRET}
+      FRONTEND_URL: ${FRONTEND_URL}
+    volumes:
+      - ./backend/ssl:/app/ssl
+      - ./backend/uploads:/app/uploads
+    restart: always
+    depends_on:
+      - mongo
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY}/frontend:latest
+    container_name: movie_booking_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    volumes:
+      - ./frontend/ssl:/app/ssl
+    restart: always
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  
+  mongo:
+    image: mongo:latest
+    container_name: movie_booking_mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    ports:
+      - "27017:27017"
+    networks:
+      - app_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local

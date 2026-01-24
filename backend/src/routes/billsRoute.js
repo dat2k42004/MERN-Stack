@@ -1,22 +1,24 @@
 const router = require("express").Router();
 
-const { AddBill, UpdateBill, DeleteBill, GetBill, GetAllBill} = require("../controllers/billControl");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { AddBill, UpdateBill, DeleteBill, GetBill, GetAllBill } = require("../controllers/billControl");
+const { requiredAdmin, requiredUser } = require("../middlewares/authMiddleware");
 
 
-router.post("/add-bill", AddBill);
 
+// add bill
+router.post("/add-bill", requiredUser, AddBill);
 
-router.post("/delete-bill", DeleteBill);
+// delete bill
+router.post("/delete-bill", requiredUser, DeleteBill);
 
+// update bill
+router.post("/update-bill", requiredUser, UpdateBill);
 
-router.post("/update-bill", UpdateBill);
+// get bill
+router.post("/get-bill", requiredUser, GetBill);
 
-
-router.post("/get-bill", GetBill);
-
-
-router.get("/get-all-bill", authMiddleware, GetAllBill);
+// get all bills
+router.get("/get-all-bill", requiredAdmin, GetAllBill);
 
 
 

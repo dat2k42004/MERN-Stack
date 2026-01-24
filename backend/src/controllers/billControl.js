@@ -14,7 +14,7 @@ const AddBill = async (req, res) => {
           const { date, user, ticket, service, promotion, totalCost } = req.body;
 
           if (user === null) {
-               return res.send({
+               return res.status(401).send({
                     success: false,
                     message: "Please login to book ticket",
                })
@@ -49,12 +49,12 @@ const AddBill = async (req, res) => {
                })
                await bill_service.save();
           });
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Booking successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -70,12 +70,12 @@ const DeleteBill = async (req, res) => {
                await Promotion.updateOne({ _id: req.body.promotion._id }, { $inc: { number: 1 } });
           }
           await Bill.deleteOne({ _id: req.body.bill._id });
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Cancel bill successfully",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -88,12 +88,12 @@ const UpdateBill = async (req, res) => {
      // console.log("bill", req.body._id);
      try {
           await Bill.updateOne({ _id: req.body._id }, { $set: { status: true } });
-          res.send({
+          res.status(200).send({
                success: true,
-               message: "Paymet successfully",
+               message: "Payment successfully",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -125,19 +125,19 @@ const GetBill = async (req, res) => {
                     movie: movie,
                     cinema: cinema,
                     room: room,
-                    service: services,
+                    services: services,
                     promotion: promotion,
                };
           }));
 
 
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Bill fetch successfully",
                data: response,
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -175,13 +175,13 @@ const GetAllBill = async (req, res) => {
 
           // console.log(response);
 
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Successfully!",
                data: response,
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message
           })

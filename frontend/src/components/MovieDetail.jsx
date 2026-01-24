@@ -14,7 +14,7 @@ function MovieDetail({ showMovieInfoModal, setShowMovieInfoModal, selectedMovie 
                     <div className="flex flex-col gap-1">
                          <h2>{selectedMovie.title}</h2>
                          <img
-                              src={selectedMovie.poster}
+                              src={`${import.meta.env.VITE_BACKEND_URL}${selectedMovie.poster}`}
                               alt="Poster"
                               style={{ width: "100%", height: 300, objectFit: "cover" }}
                          />

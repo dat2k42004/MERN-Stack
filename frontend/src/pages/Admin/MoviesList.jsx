@@ -89,7 +89,7 @@ function MoviesList() {
                               }}
                          /> */}
                          <i class="ri-image-fill" onClick={() => {
-                              setSelectedPoster(record.poster);
+                              setSelectedPoster(`${import.meta.env.VITE_BACKEND_URL}${record.poster}`);
                               setShowPosterModal(true);
                          }}></i>
                          {showPosterModal && <PosterModal

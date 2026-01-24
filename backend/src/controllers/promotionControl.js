@@ -4,20 +4,20 @@ const AddPromotion = async (req, res) => {
      try {
           const newPromotion = new Promotion(req.body);
           if (await Promotion.findOne({ name: newPromotion.name, type: newPromotion.type, rate: newPromotion.rate })) {
-               res.send({
+               res.status(400).send({
                     success: false,
                     message: "This promotion has already existed!",
                });
           }
           else {
                await newPromotion.save();
-               res.send({
+               res.status(200).send({
                     success: true,
                     message: "Promotion added successfully!",
                });
           }
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           });
@@ -27,13 +27,13 @@ const AddPromotion = async (req, res) => {
 const GetAllPromotion = async (req, res) => {
      try {
           const promotions = await Promotion.find().sort({ rate: -1 });
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Promotions fetched successfully!",
                data: promotions,
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -43,12 +43,12 @@ const GetAllPromotion = async (req, res) => {
 const UpdatePromotion = async (req, res) => {
      try {
           await Promotion.findByIdAndUpdate(req.body._id, req.body);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Promotion has updated successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -58,12 +58,12 @@ const UpdatePromotion = async (req, res) => {
 const DeletePromotion = async (req, res) => {
      try {
           await Promotion.findByIdAndDelete(req.body._id);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Promotion has deleted successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })

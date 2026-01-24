@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Form, Row, Col, message } from "antd";
 import Button from "../../components/Button";
 import { useDispatch } from "react-redux";
@@ -17,13 +17,24 @@ function MovieForm({
           selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format("YYYY-MM-DD");
      }
      const dispatch = useDispatch();
+     const [file, setFile] = useState();
      const onFinish = async (values) => {
           try {
                dispatch(ShowLoading());
                let response = null;
 
                if (formType === "add") {
-                    response = await AddMovie(values);
+                    const formData = new FormData();
+                    formData.append("title", values.title);
+                    formData.append("description", values.description);
+                    formData.append("duration", values.duration);
+                    formData.append("author", values.author);
+                    formData.append("releaseDate", values.releaseDate);
+                    formData.append("genre", values.genre);
+                    formData.append("trailer", values.trailer);
+                    formData.append("active", values.active);
+                    formData.append("poster", file);
+                    response = await AddMovie(formData);
 
                } else if (formType === "edit") {
                     response = await UpdateMovie({
@@ -121,7 +132,7 @@ function MovieForm({
                          </Col>
                          <Col span={24}>
                               <Form.Item label="Movie Poster" name="poster">
-                                   <input type="url" />
+                                   <input type="file" onChange={(e) => setFile(e.target.files[0])} />
                               </Form.Item>
                          </Col>
                          <Col span={24}>

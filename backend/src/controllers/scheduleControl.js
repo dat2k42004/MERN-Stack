@@ -6,13 +6,13 @@ const Movie = require("../models/movieModel");
 const GetAllSchedule = async (req, res) => {
      try {
           const response = await Schedule.find().sort({ date: 1, startTime: 1 });
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Schedule fetched successfully!",
                data: response,
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -54,7 +54,7 @@ const AddSchedule = async (req, res) => {
           }
 
           if (!ok) {
-               res.send({
+               res.status(400).send({
                     success: false,
                     message: "This schedule is already exists in this room!",
                });
@@ -73,13 +73,13 @@ const AddSchedule = async (req, res) => {
                     });
                     await newTicket.save();
                }
-               res.send({
+               res.status(200).send({
                     success: true,
                     message: "Schedule added successfully!",
                });
           }
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           });
@@ -98,12 +98,12 @@ const UpdateSchedule = async (req, res) => {
                }
           })
           await Schedule.findByIdAndUpdate(req.body._id, req.body);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Schedule has updated successfully!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
@@ -114,12 +114,12 @@ const DeleteSchedule = async (req, res) => {
      try {
           await Ticket.deleteMany({ schedule_id: req.body._id });
           await Schedule.findByIdAndDelete(req.body._id);
-          res.send({
+          res.status(200).send({
                success: true,
                message: "Schedule has already deleted!",
           })
      } catch (error) {
-          res.send({
+          res.status(500).send({
                success: false,
                message: error.message,
           })
