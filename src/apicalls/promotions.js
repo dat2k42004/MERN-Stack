@@ -3,7 +3,7 @@ import { axiosInstance } from "."
 
 export const AddPromotion = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/promotions/add-promotion", payload);
+          const response = await axiosInstance.post("/api/promotions/", payload);
           return response.data;
      }
      catch (error) {
@@ -13,7 +13,7 @@ export const AddPromotion = async (payload) => {
 
 export const UpdatePromotion = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/promotions/update-promotion", payload);
+          const response = await axiosInstance.put(`/api/promotions/${payload._id}`, payload);
           return response.data;
      } catch (error) {
           return error.response;
@@ -22,7 +22,7 @@ export const UpdatePromotion = async (payload) => {
 
 export const DeletePromotion = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/promotions/delete-promotion", payload);
+          const response = await axiosInstance.delete(`/api/promotions/${payload._id}`);
           return response.data;
      } catch (error) {
           return error.message;
@@ -32,7 +32,7 @@ export const DeletePromotion = async (payload) => {
 
 export const GetAllPromotions = async () => {
      try {
-          const response = await axiosInstance.get("/api/promotions/get-all-promotions");
+          const response = await axiosInstance.get("/api/promotions/");
           return response.data;
      } catch (error) {
           return error.message;

@@ -3,7 +3,7 @@ import { axiosInstance } from "."
 
 export const AddService = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/services/add-service", payload);
+          const response = await axiosInstance.post("/api/services/", payload);
           return response.data;
      }
      catch (error) {
@@ -13,7 +13,7 @@ export const AddService = async (payload) => {
 
 export const UpdateService = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/services/update-service", payload);
+          const response = await axiosInstance.put(`/api/services/${payload._id}`, payload);
           return response.data;
      } catch (error) {
           return error.response;
@@ -22,7 +22,7 @@ export const UpdateService = async (payload) => {
 
 export const DeleteService = async (payload) => {
      try {
-          const response = await axiosInstance.post("/api/services/delete-service", payload);
+          const response = await axiosInstance.delete(`/api/services/${payload._id}`);
           return response.data;
      } catch (error) {
           return error.message;
@@ -32,7 +32,7 @@ export const DeleteService = async (payload) => {
 
 export const GetAllServices = async () => {
      try {
-          const response = await axiosInstance.get("/api/services/get-all-services");
+          const response = await axiosInstance.get("/api/services/");
           return response.data;
      } catch (error) {
           return error.message;
