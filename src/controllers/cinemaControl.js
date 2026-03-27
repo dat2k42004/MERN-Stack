@@ -45,7 +45,7 @@ const GetAllCinema = async (req, res) => {
 
 const UpdateCinema = async (req, res) => {
      try {
-          await Cinema.findByIdAndUpdate(req.body._id, req.body);
+          await Cinema.findByIdAndUpdate(req.params.id, req.body);
           res.status(200).send({
                success: true,
                message: "Cinema has updated successfully!",
@@ -60,7 +60,7 @@ const UpdateCinema = async (req, res) => {
 
 const DeleteCinema  = async (req, res) => {
      try {
-          const room = await Room.findOne({cinema_id: req.body._id});
+          const room = await Room.findOne({cinema_id: req.params.id});
           if (room) {
                res.status(400).send({
                     success: false,
@@ -68,7 +68,7 @@ const DeleteCinema  = async (req, res) => {
                })
                return 0;
           }
-          await Cinema.findByIdAndDelete(req.body._id);
+          await Cinema.findByIdAndDelete(req.params.id);
           res.status(200).send({
                success: true,
                message: "Cinema has deleted successfully!",

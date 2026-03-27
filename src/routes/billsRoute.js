@@ -6,19 +6,19 @@ const { requiredAdmin, requiredUser } = require("../middlewares/authMiddleware")
 
 
 // add bill
-router.post("/add-bill", requiredUser, AddBill);
+router.post("/", requiredUser, AddBill);
 
 // delete bill
-router.post("/delete-bill", requiredUser, DeleteBill);
+router.delete("/:id", requiredUser, DeleteBill);
 
 // update bill
-router.post("/update-bill", requiredUser, UpdateBill);
+router.put("/:id", requiredUser, UpdateBill);
 
 // get bill
-router.post("/get-bill", requiredUser, GetBill);
+router.get("/user/:id", requiredUser, GetBill);
 
 // get all bills
-router.get("/get-all-bill", requiredAdmin, GetAllBill);
+router.get("/", requiredAdmin, GetAllBill);
 
 
 

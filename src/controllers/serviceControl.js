@@ -28,7 +28,7 @@ const AddService = async (req, res) => {
 
 const UpdateService = async (req, res) => {
      try {
-          await Service.findByIdAndUpdate(req.body._id, req.body);
+          await Service.findByIdAndUpdate(req.params.id, req.body);
           res.status(200).send({
                success: true,
                message: "Service has updated successfully!",
@@ -43,7 +43,7 @@ const UpdateService = async (req, res) => {
 
 const DeleteService = async (req, res) => {
      try {
-          await Service.findByIdAndDelete(req.body._id);
+          await Service.findByIdAndDelete(req.params.id);
           res.status(200).send({
                success: true,
                message: "Service has deleted successfully!",

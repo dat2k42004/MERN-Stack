@@ -5,15 +5,15 @@ const {AddCinema, GetAllCinema, UpdateCinema, DeleteCinema} = require("../contro
 
 // add a new cinema
 
-router.post("/add-cinema", requiredAdmin, AddCinema);
+router.post("/", requiredAdmin, AddCinema);
 
 
-router.get("/get-all-cinemas", GetAllCinema);
+router.get("/", GetAllCinema);
 
 
-router.post("/update-cinema", requiredAdmin, UpdateCinema);
+router.put("/:id", requiredAdmin, UpdateCinema);
 
-router.post("/delete-cinema", requiredAdmin, DeleteCinema)
+router.delete("/:id", requiredAdmin, DeleteCinema)
 
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
 
@@ -83,7 +85,7 @@ const Login = async (req, res) => {
             });
         }
 
-        //create and assign a token 
+        //create and assign a token
         const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
             expiresIn: "1d",
         })
@@ -101,6 +103,50 @@ const Login = async (req, res) => {
         });
     }
 };
+
+const LoginGoogle = async (req, res) => {
+    try {
+        // console.log("token", req.body.token);
+        const { token } = req.body;
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        const { sub, email, name } = payload;
+
+        let user = await User.findOne({ email: email });
+
+        if (!user) {
+            user = new User({
+                username: name,
+                email: email,
+                googleId: sub,
+                isAdmin: false,
+                active: true,
+            })
+            await user.save();
+        }
+
+        const jwtToken = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
+            expiresIn: "1d",
+        })
+
+        res.status(200).send({
+            success: true,
+            message: 'Login with Google successfully',
+            data: jwtToken,
+        })
+    }
+    catch (err) {
+        return res.status(500).send({
+            success: false,
+            message: err.message,
+        })
+    }
+}
 
 const GetCurrentUser = async (req, res) => {
     try {
@@ -122,7 +168,7 @@ const GetCurrentUser = async (req, res) => {
 
 const UpdateUser = async (req, res) => {
     try {
-        await User.findByIdAndUpdate(req.body._id, req.body);
+        await User.findByIdAndUpdate(req.params.id, req.body);
         res.status(200).send({
             success: true,
             message: "User has already updated!",
@@ -137,7 +183,7 @@ const UpdateUser = async (req, res) => {
 
 const DeleteUser = async (req, res) => {
     try {
-        await User.findByIdAndDelete(req.body._id);
+        await User.findByIdAndDelete(req.params.id);
         res.status(200).send({
             success: true,
             message: "User has already deleted!",
@@ -221,5 +267,6 @@ module.exports = {
     UpdateUser,
     DeleteUser,
     GetAllUser,
-    ChangePassword
+    ChangePassword,
+    LoginGoogle,
 }

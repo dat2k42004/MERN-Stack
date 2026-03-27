@@ -33,7 +33,7 @@ const AddRoom = async(req, res) => {
 
 const DeleteRoom = async (req, res) => {
      try {
-          const schedule = await Schedule.findOne({room_id: req.body._id});
+          const schedule = await Schedule.findOne({room_id: req.params.id});
           if (schedule) {
                // console.log("schedule", schedule);
                res.status(400).send({
@@ -42,8 +42,8 @@ const DeleteRoom = async (req, res) => {
                })
                return 0;
           }
-          await Seat.deleteMany({room_id: req.body._id});
-          await Room.findByIdAndDelete(req.body._id);
+          await Seat.deleteMany({room_id: req.params.id});
+          await Room.findByIdAndDelete(req.params.id);
           res.status(200).send({
                success: true,
                message: "Room has deleted successfully!",
@@ -59,18 +59,18 @@ const DeleteRoom = async (req, res) => {
 
 const UpdateRoom = async (req, res) => {
      try {
-          const res1 = await Room.findOne({_id: req.body._id});
-          await Room.findByIdAndUpdate(req.body._id, req.body);
-          const res2 = await Room.findOne({ _id: req.body._id });
+          const res1 = await Room.findOne({_id: req.params.id});
+          await Room.findByIdAndUpdate(req.params.id, req.body);
+          const res2 = await Room.findOne({ _id: req.params.id });
           if (res1.quantity > res2.quantity) {
                for (let i = res2.quantity + 1; i <= res1.quantity; ++ i) {
-                    const seat = await Seat.findOne({seatNum: i, room_id: req.body._id});
+                    const seat = await Seat.findOne({seatNum: i, room_id: req.params.id});
                     await Ticket.deleteMany({seat_id: seat._id});
-                    await Seat.findOneAndDelete({seatNum: i, room_id: req.body._id});
+                    await Seat.findOneAndDelete({seatNum: i, room_id: req.params.id});
                }
           }else if (res2.quantity > res1.quantity) {
                for(let i = res1.quantity + 1; i <= res2.quantity; ++ i) {
-                    const newSeat = new Seat({ seatNum: i, type: "Single", room_id: req.body._id });
+                    const newSeat = new Seat({ seatNum: i, type: "Single", room_id: req.params.id });
                     await newSeat.save();
                }
           }

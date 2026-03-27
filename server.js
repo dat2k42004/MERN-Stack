@@ -9,12 +9,24 @@ const router = require("./src/routes/index");
 const app = express();
 const POST = process.env.PORT || 8080;
 
+const helmetConfig = require("./src/config/helmet");
+const limiter = require("./src/config/rateLimit");
+const redis = require("./src/config/redis");
 
-app.use(express.json());
+
+
+app.use(express.json({
+    limit: '20kb'
+}
+));
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
 }));
+
+app.use(helmetConfig);
+
+app.use(limiter);
 
 app.get('/', (req, res) => {
     res.send("Hello World!");

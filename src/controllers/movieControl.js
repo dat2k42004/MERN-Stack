@@ -61,7 +61,7 @@ const GetAllMovie = async (req, res) => {
 
 const UpdateMovie = async (req, res) => {
      try {
-          await Movie.findByIdAndUpdate(req.body._id, req.body);
+          await Movie.findByIdAndUpdate(req.params.id, req.body);
           res.status(200).send({
                success: true,
                message: "Movie has updated successfully!",
@@ -77,7 +77,7 @@ const UpdateMovie = async (req, res) => {
 
 const DeleteMovie = async (req, res) => {
      try {
-          const schedule = await Schedule.findOne({ movie_id: req.body._id });
+          const schedule = await Schedule.findOne({ movie_id: req.params.id });
           if (schedule) {
                res.status(400).send({
                     success: false,
@@ -85,7 +85,7 @@ const DeleteMovie = async (req, res) => {
                })
                return 0;
           }
-          await Movie.findByIdAndDelete(req.body._id);
+          await Movie.findByIdAndDelete(req.params.id);
           res.status(200).send({
                success: true,
                message: "Movie has deleted successfully!",

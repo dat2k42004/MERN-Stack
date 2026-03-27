@@ -42,7 +42,7 @@ const GetAllPromotion = async (req, res) => {
 
 const UpdatePromotion = async (req, res) => {
      try {
-          await Promotion.findByIdAndUpdate(req.body._id, req.body);
+          await Promotion.findByIdAndUpdate(req.params.id, req.body);
           res.status(200).send({
                success: true,
                message: "Promotion has updated successfully!",
@@ -57,7 +57,7 @@ const UpdatePromotion = async (req, res) => {
 
 const DeletePromotion = async (req, res) => {
      try {
-          await Promotion.findByIdAndDelete(req.body._id);
+          await Promotion.findByIdAndDelete(req.params.id);
           res.status(200).send({
                success: true,
                message: "Promotion has deleted successfully!",

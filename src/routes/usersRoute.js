@@ -4,7 +4,7 @@ const router = require("express").Router();
 // const jwt = require("jsonwebtoken");
 const { requiredAdmin, requiredUser } = require("../middlewares/authMiddleware")
 
-const { Register, Login, GetCurrentUser, UpdateUser, DeleteUser, GetAllUser, ChangePassword } = require("../controllers/userControl");
+const { Register, Login, GetCurrentUser, UpdateUser, DeleteUser, GetAllUser, ChangePassword, LoginGoogle } = require("../controllers/userControl");
 
 // register new user
 
@@ -12,15 +12,17 @@ router.post('/register', Register);
 
 router.post("/login", Login);
 
+router.post("/login-google", LoginGoogle);
+
 
 //get user details by id
 router.get("/get-current-user", requiredUser, GetCurrentUser);
 
-router.post("/update-user", requiredUser, UpdateUser);
+router.put("/:id", requiredUser, UpdateUser);
 
-router.post("/delete-user", requiredUser, DeleteUser);
+router.delete("/:id", requiredUser, DeleteUser);
 
-router.get("/get-all-users", requiredAdmin, GetAllUser);
-router.post("/change-password", requiredUser, ChangePassword);
+router.get("/", requiredAdmin, GetAllUser);
+router.put("/change-password", requiredUser, ChangePassword);
 
 module.exports = router;

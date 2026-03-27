@@ -2,13 +2,13 @@ const router = require("express").Router();
 const { GetAllSchedule, AddSchedule, UpdateSchedule, DeleteSchedule } = require("../controllers/scheduleControl");
 const { requiredAdmin, requiredUser } = require("../middlewares/authMiddleware");
 
-router.get("/get-all-schedules", GetAllSchedule);
+router.get("/", GetAllSchedule);
 
-router.post("/add-schedule", requiredAdmin, AddSchedule);
+router.post("/", requiredAdmin, AddSchedule);
 
-router.post("/update-schedule", requiredAdmin, UpdateSchedule);
+router.put("/:id", requiredAdmin, UpdateSchedule);
 
-router.post("/delete-schedule", requiredAdmin, DeleteSchedule);
+router.delete("/:id", requiredAdmin, DeleteSchedule);
 
 
 module.exports = router;
