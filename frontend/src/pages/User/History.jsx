@@ -123,20 +123,20 @@ function History({ user }) {
                       <div className="info-item">
                         <span className="info-label">Dịch vụ:</span>
                         <span className="info-value">
-                          {d.service.length > 0
-                            ? d.service.map((e) => `${e.service.type} (×${e.quantity})`).join(', ')
+                          {d?.service?.length > 0
+                            ? d?.service?.map((e) => `${e?.service?.type} (×${e?.quantity})`).join(', ')
                             : "Không"}
                         </span>
                       </div>
                       <div className="info-item">
                         <span className="info-label">Khuyến mãi:</span>
                         <span className="info-value">
-                          {d.promotion ? `Giảm ${d.promotion.rate}%` : "Không"}
+                          {d?.promotion ? `Giảm ${d?.promotion?.rate}%` : "Không"}
                         </span>
                       </div>
                       <div className="info-item total-cost">
                         <span className="info-label">Tổng tiền:</span>
-                        <span className="info-value">{d.bill.totalCost.toLocaleString()} VND</span>
+                        <span className="info-value">{d?.bill?.totalCost.toLocaleString()} VND</span>
                       </div>
                     </div>
                   </div>

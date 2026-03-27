@@ -3,14 +3,14 @@ const { requiredUser, requiredAdmin } = require("../middlewares/authMiddleware")
 const { AddPromotion, UpdatePromotion, DeletePromotion, GetAllPromotion } = require("../controllers/promotionControl");
 // add a new promotion
 
-router.post("/add-promotion", requiredAdmin, AddPromotion);
+router.post("/", requiredAdmin, AddPromotion);
 
-router.get("/get-all-promotions", GetAllPromotion);
+router.get("/", GetAllPromotion);
 
 
-router.post("/update-promotion", requiredAdmin, UpdatePromotion);
+router.put("/:id", requiredAdmin, UpdatePromotion);
 
-router.post("/delete-promotion", requiredAdmin, DeletePromotion);
+router.delete("/:id", requiredAdmin, DeletePromotion);
 
 
 module.exports = router;

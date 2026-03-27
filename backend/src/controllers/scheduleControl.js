@@ -89,15 +89,15 @@ const AddSchedule = async (req, res) => {
 
 const UpdateSchedule = async (req, res) => {
      try {
-          const schedule = await Schedule.findOne({ _id: req.body._id })
-          await Ticket.updateMany({ schedule_id: req.body._id }, {
+          const schedule = await Schedule.findOne({ _id: req.params.id })
+          await Ticket.updateMany({ schedule_id: req.params.id }, {
                $set: {
                     price: schedule.price,
                     date: schedule.date,
                     schedule_id: schedule._id
                }
           })
-          await Schedule.findByIdAndUpdate(req.body._id, req.body);
+          await Schedule.findByIdAndUpdate(req.params.id, req.body);
           res.status(200).send({
                success: true,
                message: "Schedule has updated successfully!",
@@ -112,8 +112,8 @@ const UpdateSchedule = async (req, res) => {
 
 const DeleteSchedule = async (req, res) => {
      try {
-          await Ticket.deleteMany({ schedule_id: req.body._id });
-          await Schedule.findByIdAndDelete(req.body._id);
+          await Ticket.deleteMany({ schedule_id: req.params.id });
+          await Schedule.findByIdAndDelete(req.params.id);
           res.status(200).send({
                success: true,
                message: "Schedule has already deleted!",

@@ -62,14 +62,14 @@ const AddBill = async (req, res) => {
 }
 
 const DeleteBill = async (req, res) => {
-     // console.log(req.body);
      try {
-          await Bill_Service.deleteMany({ bill_id: req.body.bill._id });
-          await Ticket.updateMany({ bill_id: req.body.bill._id }, { $set: { status: false, bill_id: null } });
-          if (req.promotion) {
-               await Promotion.updateOne({ _id: req.body.promotion._id }, { $inc: { number: 1 } });
+          const bill = await Bill.findById(req.params.id);
+          await Bill_Service.deleteMany({ bill_id: req.params.id });
+          await Ticket.updateMany({ bill_id: req.params.id }, { $set: { status: false, bill_id: null } });
+          if (bill.promotion_id) {
+               await Promotion.updateOne({ _id: bill.promotion_id }, { $inc: { number: 1 } });
           }
-          await Bill.deleteOne({ _id: req.body.bill._id });
+          await Bill.deleteOne({ _id: req.params.id });
           res.status(200).send({
                success: true,
                message: "Cancel bill successfully",
@@ -85,9 +85,8 @@ const DeleteBill = async (req, res) => {
 
 
 const UpdateBill = async (req, res) => {
-     // console.log("bill", req.body._id);
      try {
-          await Bill.updateOne({ _id: req.body._id }, { $set: { status: true } });
+          await Bill.updateOne({ _id: req.params.id }, { $set: { status: true } });
           res.status(200).send({
                success: true,
                message: "Payment successfully",
@@ -102,10 +101,7 @@ const UpdateBill = async (req, res) => {
 
 const GetBill = async (req, res) => {
      try {
-          // console.log(req.body);
-          const { user } = req.body;
-          // console.log(user);
-          const bills = await Bill.find({ user_id: req.body._id });
+          const bills = await Bill.find({ user_id: req.params.id });
           const response = await Promise.all(bills.map(async (b) => {
                const bill_service = await Bill_Service.find({ bill_id: b._id });
                const services = await Promise.all(bill_service.map(async (e) => ({

@@ -2,8 +2,8 @@ const Ticket = require("../models/ticketModel");
 
 const GetTicket = async (req, res) => {
      try {
-          const response = await Ticket.find({ schedule_id: req.body._id }).sort({ seat: 1 });
-          console.log(req.query._id);
+          const response = await Ticket.find({ schedule_id: req.params.id }).sort({ seat: 1 });
+          console.log(req.params.id);
           res.status(200).send({
                success: true,
                message: "Ticket fetch successfully!",

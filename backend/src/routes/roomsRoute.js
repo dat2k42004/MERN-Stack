@@ -5,15 +5,15 @@ const {requiredUser, requiredAdmin} = require("../middlewares/authMiddleware");
 const { AddRoom, UpdateRoom, DeleteRoom, GetAllRoom } = require("../controllers/roomControl");
 // add a new Room
 
-router.post("/add-room", requiredAdmin, AddRoom);
+router.post("/", requiredAdmin, AddRoom);
 
 
-router.get("/get-all-rooms", GetAllRoom);
+router.get("/", GetAllRoom);
 
 
-router.post("/update-room", requiredAdmin, UpdateRoom);
+router.put("/:id", requiredAdmin, UpdateRoom);
 
-router.post("/delete-room", requiredAdmin, DeleteRoom);
+router.delete("/:id", requiredAdmin, DeleteRoom);
 
 
 module.exports = router;

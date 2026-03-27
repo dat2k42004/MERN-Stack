@@ -4,15 +4,15 @@ const {requiredAdmin, requiredUser} = require("../middlewares/authMiddleware");
 
 // add a new service
 
-router.post("/add-service", requiredAdmin, AddService);
+router.post("/", requiredAdmin, AddService);
 
 
-router.get("/get-all-services", GetAllService);
+router.get("/", GetAllService);
 
 
-router.post("/update-service", requiredAdmin, UpdateService);
+router.put("/:id", requiredAdmin, UpdateService);
 
-router.post("/delete-service", requiredAdmin, DeleteService);
+router.delete("/:id", requiredAdmin, DeleteService);
 
 
 module.exports = router;
