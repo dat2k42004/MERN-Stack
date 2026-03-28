@@ -1,5 +1,6 @@
 const express = require("express");
-const https = require("https");
+// const https = require("https");
+const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
@@ -36,13 +37,13 @@ app.use("/api", router);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // SSL Configuration
-const sslOptions = {
-    key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
-};
+// const sslOptions = {
+//     key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+//     cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
+// };
 
 // Create HTTPS server
-https.createServer(sslOptions, app).listen(POST, () => {
+http.createServer(app).listen(POST, () => {
     console.log(`Server is running on https://localhost:${POST}`);
 });
 
